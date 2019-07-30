@@ -11,8 +11,6 @@
         v-bind="form.extra || {}"
         :is="form.type || 'el-input'"
         v-model="model[key]"
-        auto-complete="off"
-        :type="form.inputType || 'input'"
       ></component>
     </el-form-item>
     <slot></slot>
