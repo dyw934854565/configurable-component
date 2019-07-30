@@ -1,6 +1,6 @@
 {
   "name": "configable-component",
-  "version": "3.0.4",
+  "version": "0.0.1",
   "description": "configable-component base on element-ui",
   "scripts": {
     "start": "webpack -w -p"
