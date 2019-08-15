@@ -9,6 +9,7 @@
     >
       <component
         v-bind="form.extra || {}"
+        @input="$emit('change', key)"
         :is="form.type || 'el-input'"
         v-model="model[key]"
       ></component>
