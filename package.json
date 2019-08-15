@@ -1,6 +1,6 @@
 {
   "name": "@mtfe/configable-component",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "configable-component base on element-ui",
   "scripts": {
     "start": "webpack -w -p"
