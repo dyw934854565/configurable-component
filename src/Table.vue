@@ -1,5 +1,5 @@
 <template>
-  <el-table v-bind="$attrs">
+  <el-table v-bind="$attrs" v-on="$listeners">
     <el-table-column v-for="col in cols" :key="col.prop" :prop="col.prop" :label="col.label" v-bind="col.extra || {}">
       <template slot-scope="scope">
         <component v-if="col.component" :is="col.component" v-bind="makeData(col.value, scope.row[col.prop], scope)"></component>

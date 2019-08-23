@@ -1,5 +1,5 @@
 <template>
-  <el-form v-bind="$attrs" @submit.native.prevent :model="model" :rules="rules" ref="form">
+  <el-form v-on="$listeners" v-bind="$attrs" @submit.native.prevent :model="model" :rules="rules" ref="form">
     <el-form-item
       :class="`${form.type || 'el-input'}-form-item ${form.class}`"
       v-for="(form, key) in forms"
