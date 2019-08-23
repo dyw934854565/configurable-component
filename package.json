@@ -1,6 +1,6 @@
 {
-  "name": "@mtfe/configable-component",
-  "version": "1.0.2",
+  "name": "configable-component",
+  "version": "1.0.3",
   "main": "src/index.js",
   "description": "configable-component base on element-ui",
   "scripts": {
