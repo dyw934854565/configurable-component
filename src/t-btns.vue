@@ -10,7 +10,12 @@ export default {
   methods: {
     onClick (btn) {
       if (btn.handle) {
-        btn.handle(this.scope)
+        try {
+          const res = await btn.handle(this.scope)
+          res && this.$message.success(res)
+        } catch (e) {
+          this.$message.error(e.message || e.msg || '操作失败')
+        }
       }
     }
   }
