@@ -1,6 +1,6 @@
 {
   "name": "configable-component",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "src/index.js",
   "description": "configable-component base on element-ui",
   "scripts": {

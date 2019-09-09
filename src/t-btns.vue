@@ -8,7 +8,7 @@
 export default {
   props: ['btns', 'scope'],
   methods: {
-    onClick (btn) {
+    async onClick (btn) {
       if (btn.handle) {
         try {
           const res = await btn.handle(this.scope)
