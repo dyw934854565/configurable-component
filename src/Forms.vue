@@ -75,13 +75,6 @@ export default {
 </script>
 
 <style>
-  .el-input,
-  .el-textarea {
-    width: auto;
-  }
-  .el-form-item {
-    margin-bottom: 28px;
-  }
   .el-form-item.is-required .el-form-item__label::before {
     content: "";
   }
