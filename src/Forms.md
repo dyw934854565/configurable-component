@@ -39,8 +39,9 @@
       return {
         model: {
         },
-        forms: {
-          name: {
+        forms: [
+          {
+            key: 'name',
             type: 'el-input',
             default: 'name',
             extra: {
@@ -51,8 +52,8 @@
               { required: true, message: '请输入活动名称', trigger: 'blur' },
               { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
             ]
-          },
-        }
+          }
+        ]
       }
     }
   }
@@ -77,8 +78,9 @@ el-input可在extra中设置type="textarea"
       return {
         model: {
         },
-        forms: {
-          name: {
+        forms: [
+          {
+            key: 'name',
             type: 'f-select',
             extra: {
               options: [
@@ -95,8 +97,8 @@ el-input可在extra中设置type="textarea"
             rules: [
               { required: true, message: '请选择活动名称', trigger: 'blur' }
             ]
-          },
-        }
+          }
+        ]
       }
     }
   }
@@ -116,8 +118,9 @@ el-input可在extra中设置type="textarea"
       return {
         model: {
         },
-        forms: {
-          name: {
+        forms: [
+          {
+            key: 'file',
             type: 'f-file',
             extra: {
               multiple: false,
@@ -132,8 +135,8 @@ el-input可在extra中设置type="textarea"
             rules: [
               { required: true, message: '请选择文件', trigger: 'blur' }
             ]
-          },
-        }
+          }
+        ]
       }
     }
   }

@@ -2,16 +2,16 @@
   <el-form v-on="$listeners" v-bind="$attrs" @submit.native.prevent :model="model" :rules="rules" ref="form">
     <el-form-item
       :class="`${form.type || 'el-input'}-form-item ${form.class}`"
-      v-for="(form, key) in forms"
-      :key="key"
+      v-for="form in forms"
+      :key="form.key"
       :label="form.label"
-      :prop="key"
+      :prop="form.key"
     >
       <component
         v-bind="form.extra || {}"
-        @input="$emit('change', key)"
+        @input="$emit('change', form.key)"
         :is="form.type || 'el-input'"
-        v-model="model[key]"
+        v-model="model[form.key]"
       ></component>
     </el-form-item>
     <slot></slot>
@@ -38,8 +38,8 @@ export default {
   computed: {
     rules () {
       const rules = {}
-      Object.keys(this.forms).forEach(key => {
-        rules[key] = this.forms[key].rules
+      this.forms.forEach(form => {
+        rules[form.key] = form.rules
       })
       return rules
     }
@@ -52,11 +52,11 @@ export default {
     setDefault () {
       let changed = false
       const model = Object.assign({}, this.model)
-      Object.keys(this.forms).forEach(key => {
-        if (this.forms[key].default) {
-          if (this.model[key] === undefined) {
+      this.forms.forEach(form => {
+        if (form.default) {
+          if (this.model[form.key] === undefined) {
             changed = true
-            model[key] = this.forms[key].default
+            model[form.key] = form.default
           }
         }
       })
