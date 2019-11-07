@@ -8,8 +8,7 @@
     <el-checkbox
       v-for="option in trueOptions || []"
       :key="option.value"
-      :label="option.label"
-      :value="option.value">
+      :label="option.label">
     </el-checkbox>
   </el-checkbox-group>
 </template>
@@ -20,7 +19,7 @@ export default {
   props: ['value', 'options'],
   data: () => ({
     innerOptions: [],
-    loading: 'false'
+    loading: false
   }),
   methods: {
     onInput (val) {

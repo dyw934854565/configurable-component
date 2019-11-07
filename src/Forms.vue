@@ -9,9 +9,9 @@
     >
       <component
         v-bind="form.extra || {}"
-        @input="$emit('change', form.key)"
+        @input="onChange(form.key, $event)"
         :is="form.type || 'el-input'"
-        v-model="model[form.key]"
+        :value="model[form.key]"
       ></component>
     </el-form-item>
     <slot></slot>
@@ -46,7 +46,7 @@ export default {
   },
   created () {
     this.setDefault()
-    this.$watch('model', this.setDefault.bind(this))
+    this.$watch('forms', this.setDefault.bind(this))
   },
   methods: {
     setDefault () {
@@ -67,8 +67,20 @@ export default {
     validate (...args) {
       return this.$refs['form'].validate(...args)
     },
+    onChange (key, value) {
+      const newModel = {
+        ...this.model,
+        [key]: value
+      }
+      this.setModel(newModel)
+    },
+    setModel (model) {
+      this.$emit('change', model)
+      this.$emit('update:model', model)
+    },
     resetForm () {
       this.$refs['form'].resetFields()
+      this.setModel({})
     }
   }
 }
