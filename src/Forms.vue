@@ -24,6 +24,7 @@ import fFile from './f-file'
 import fCascader from './f-cascader'
 import fCheckbox from './f-checkbox'
 import fRadiobox from './f-radiobox'
+import fTags from './f-tags'
 export default {
   inheritAttrs: false,
   name: 'Forms',
@@ -33,7 +34,8 @@ export default {
     fFile,
     fCascader,
     fCheckbox,
-    fRadiobox
+    fRadiobox,
+    fTags
   },
   computed: {
     rules () {
