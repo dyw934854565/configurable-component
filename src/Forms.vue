@@ -2,7 +2,7 @@
   <el-form v-on="$listeners" v-bind="$attrs" @submit.native.prevent :model="model" :rules="rules" ref="form">
     <el-form-item
       :class="`${form.type || 'el-input'}-form-item ${form.class}`"
-      v-for="form in forms"
+      v-for="form in trueForms"
       :key="form.key"
       :label="form.label"
       :prop="form.key"
@@ -37,10 +37,13 @@ export default {
     fRadiobox,
     fTags
   },
+  data () {
+    return {trueForms: []}
+  },
   computed: {
     rules () {
       const rules = {}
-      this.forms.forEach(form => {
+      this.trueForms.forEach(form => {
         rules[form.key] = form.rules
       })
       return rules
@@ -49,12 +52,25 @@ export default {
   created () {
     this.setDefault()
     this.$watch('forms', this.setDefault.bind(this))
+    this.$watch('model', () => {
+      if (typeof this.forms === 'function') {
+        this.trueForms = this.forms(this.model)
+      }
+    })
   },
   methods: {
+    setTrueForms () {
+      if (typeof this.forms === 'function') {
+        this.trueForms = this.forms(this.model)
+        return
+      }
+      this.trueForms = this.forms
+    },
     setDefault () {
+      this.setTrueForms()
       let changed = false
       const model = Object.assign({}, this.model)
-      this.forms.forEach(form => {
+      this.trueForms.forEach(form => {
         if (form.default) {
           if (this.model[form.key] === undefined) {
             changed = true
@@ -63,11 +79,20 @@ export default {
         }
       })
       if (changed) {
-        this.$emit('change', model)
+        this.setModel(model)
       }
     },
     validate (...args) {
       return this.$refs['form'].validate(...args)
+    },
+    validateField (...args) {
+      this.$refs['form'].validateField(...args)
+    },
+    resetFields () {
+      this.$refs['form'].resetFields()
+    },
+    clearValidate (...args) {
+      this.$refs['form'].clearValidate(...args)
     },
     onChange (key, value) {
       const newModel = {
@@ -79,10 +104,6 @@ export default {
     setModel (model) {
       this.$emit('change', model)
       this.$emit('update:model', model)
-    },
-    resetForm () {
-      this.$refs['form'].resetFields()
-      this.setModel({})
     }
   }
 }
