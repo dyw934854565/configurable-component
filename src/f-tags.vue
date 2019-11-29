@@ -56,9 +56,7 @@ export default {
 </script>
 
 <style>
-.f-tags {
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
+.f-tags .el-tag + .el-tag {
+  margin-left: 10px;
 }
 </style>
