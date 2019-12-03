@@ -13,7 +13,19 @@
 <script>
 export default {
   inheritAttrs: false,
-  props: ['value', 'on-change', 'on-remove'],
+  props: {
+    value: {
+        required: true
+    },
+    'on-change': {
+      type: Function,
+      required: false
+    },
+    'on-remove': {
+      type: Function,
+      required: false
+    }
+  },
   computed: {
     fileList () {
       if (typeof this.value === 'object') {
@@ -27,8 +39,6 @@ export default {
       this.$emit('input', fileList)
     },
     onChangeBind (...args) {
-      console.log('onchange', this.onChange)
-
       if (this.onChange) {
         this.onChange(this, ...args)
       }

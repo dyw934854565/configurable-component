@@ -28,7 +28,14 @@ import fTags from './f-tags'
 export default {
   inheritAttrs: false,
   name: 'Forms',
-  props: ['forms', 'model'],
+  props: {
+    forms: {
+      type: [Array, Function],
+      required: false,
+      default: () => []
+    },
+    model: Object
+  },
   components: {
     fSelect,
     fFile,

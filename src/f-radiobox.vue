@@ -16,7 +16,15 @@
 <script>
 export default {
   inheritAttrs: false,
-  props: ['value', 'options'],
+  props: {
+    value: {
+        required: true
+    },
+    options: {
+      type: [Array, Function],
+      required: true
+    }
+  },
   data: () => ({
     innerOptions: [],
     loading: false

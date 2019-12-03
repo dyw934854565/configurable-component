@@ -6,15 +6,20 @@
 
 <script>
 export default {
-  props: ['btns', 'scope'],
+  props: {
+    btns: {
+      type: Array,
+      required: true
+    },
+    scope: Object
+  },
   methods: {
     async onClick (btn) {
       if (btn.handle) {
         try {
           const res = await btn.handle(this.scope)
-          res && this.$message.success(res)
         } catch (e) {
-          e && this.$message.error(e.message || e.msg || '操作失败')
+          this.$handleError && this.$handleError(e, '操作失败')
         }
       }
     }

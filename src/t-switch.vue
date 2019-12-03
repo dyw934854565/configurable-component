@@ -1,16 +1,25 @@
 <template>
   <div>
-    <el-switch @change="onChange" v-bind="elswitch.extra" v-model="elswitch.value" ></el-switch>
+    <el-switch @change="onChange" v-bind="$attrs"></el-switch>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['elswitch', 'scope'],
+  props: {
+    handle: {
+      type: Function
+    },
+    scope: Object
+  },
   methods: {
-    onChange (val) {
-      if (this.elswitch.handle) {
-        this.elswitch.handle(this.scope)
+    async onChange (val) {
+      if (this.handle) {
+        try {
+          await this.handle(this.scope)
+        } catch (e) {
+          this.$handleError && this.$handleError(e, '操作失败')
+        }
       }
     }
   }

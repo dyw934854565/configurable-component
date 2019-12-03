@@ -17,7 +17,11 @@
 <script>
 export default {
   inheritAttrs: false,
-  props: ['value', 'type', 'checkNew'],
+  props: {
+    value: [String, Array],
+    type: String,
+    checkNew: Function
+  },
   data: () => ({
     newStr: ''
   }),
