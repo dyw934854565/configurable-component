@@ -1,7 +1,7 @@
 <template>
   <div class="data-table">
     <slot></slot>
-    <Table v-loading="loading" v-bind="$attrs" v-on="$listeners" :cols="cols" :data="list" @filter-change="filterChange"/>
+    <Table v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners"/>
     <div class="clearfix">
       <el-pagination
         class="pull-right"
@@ -100,9 +100,14 @@ export default {
       }
       this.loading = false
     },
-    filterChange (filterOption) {
+    onFilterChange (filterOption) {
       this.filterOption = filterOption
-      this.getDataInner()
+      this.pageInfoInner.currentPage = 1
+      return this.getDataInner()
+    },
+    onSearch () {
+      this.pageInfoInner.currentPage = 1
+      return this.getDataInner()
     }
   }
 }
