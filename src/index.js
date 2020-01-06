@@ -9,7 +9,7 @@ export default {
   dataTable,
   dataDialog,
   install (Vue) {
-    if (typeof Vue.component('el-form') !== 'function') {
+    if (typeof Vue.component('ElForm') !== 'function') {
       throw new Error('element ui should be install first')
     }
     Vue.component('Table', Table)
