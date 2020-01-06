@@ -4,13 +4,13 @@
       <el-tag
         v-for="(tag, index) in values"
         :key="index + tag"
-        closable
+        :closable="!readonly && !disabled"
         @close="del(index)"
-        :type="type">
-        {{tag}}
+        :type="type || tag.type">
+        {{tag.label || tag}}
       </el-tag>
     </div>
-    <div><el-input v-model="newStr" v-bind="$attrs" @keydown.native.enter="add"></el-input></div>
+    <div v-if="!readonly && !disabled"><el-input v-model="newStr" v-bind="$attrs" @blur="add" @keydown.native.enter="add"></el-input></div>
   </div>
 </template>
 
@@ -20,6 +20,14 @@ export default {
   props: {
     value: [String, Array],
     type: String,
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     checkNew: Function
   },
   data: () => ({
