@@ -1,8 +1,5 @@
 <template>
-  <el-dialog
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <el-dialog v-bind="$attrs" v-on="$listeners">
     <slot></slot>
     <Forms ref="form" v-bind="formAttrs" :forms="forms" :model="model" @update:model="onChange"></Forms>
     <div class="op-wrap">

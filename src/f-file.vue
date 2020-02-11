@@ -15,7 +15,7 @@ export default {
   inheritAttrs: false,
   props: {
     value: {
-        required: true
+      required: true
     },
     'on-change': {
       type: Function,

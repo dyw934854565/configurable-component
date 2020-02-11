@@ -18,7 +18,7 @@ export default {
   inheritAttrs: false,
   props: {
     value: {
-        required: true
+      required: true
     },
     options: {
       type: [Array, Function],

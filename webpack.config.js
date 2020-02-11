@@ -1,17 +1,18 @@
-var webpack = require('webpack');
-var UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
-var path = require("path");
-var VueLoaderPlugin = require("vue-loader/lib/plugin");
+var webpack = require('webpack')
+var UnminifiedWebpackPlugin = require('unminified-webpack-plugin')
+var path = require('path')
+var VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 var config = {
+  mode: 'production',
   entry: {
-    admin: "./src/index.js"
+    admin: './src/index.js'
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].min.js",
-    library: "Admin",
-    libraryTarget: "umd",
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].min.js',
+    library: 'Admin',
+    libraryTarget: 'umd',
     umdNamedDefine: true
   },
   resolve: {
@@ -22,19 +23,19 @@ var config = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: 'babel-loader'
       },
       {
         test: /\.vue$/,
-        loader: "vue-loader"
+        loader: 'vue-loader'
       },
       {
         test: /\.css$/,
-        loader: ["style-loader", "css-loader", "postcss-loader"]
+        loader: ['style-loader', 'css-loader', 'postcss-loader']
       }
     ]
   },
-  devtool: "#source-map",
+  devtool: '#source-map',
   plugins: [
     new VueLoaderPlugin(),
     new UnminifiedWebpackPlugin(),
@@ -43,6 +44,6 @@ var config = {
       sourceMap: true
     })
   ]
-};
+}
 
-module.exports = config;
+module.exports = config

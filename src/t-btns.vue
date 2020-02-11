@@ -17,7 +17,7 @@ export default {
     async onClick (btn) {
       if (btn.handle) {
         try {
-          const res = await btn.handle(this.scope)
+          await btn.handle(this.scope)
         } catch (e) {
           this.$handleError && this.$handleError(e, '操作失败')
         }

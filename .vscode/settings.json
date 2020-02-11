@@ -1,0 +1,24 @@
+{
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "prettier.semi": false,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "[css]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+  },
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "eslint.options": {
+    "extensions": [".js", ".vue"]
+  },
+  "stylelint.enable": true,
+  "vetur.validation.style": false,
+  "vetur.format.styleInitialIndent": true,
+  "vetur.format.scriptInitialIndent": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  }
+}
