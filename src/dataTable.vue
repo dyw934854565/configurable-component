@@ -1,7 +1,7 @@
 <template>
   <div class="data-table">
     <slot></slot>
-    <Table v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners"/>
+    <t-table v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners"/>
     <div class="clearfix">
       <el-pagination
         class="pull-right"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Table from './Table'
+import tTable from './t-table'
 export default {
   props: {
     cols: {
@@ -61,7 +61,7 @@ export default {
     }
   },
   components: {
-    Table
+    tTable
   },
   methods: {
     onSizeChange (pageSize) {

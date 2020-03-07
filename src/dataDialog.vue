@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-bind="$attrs" v-on="$listeners">
     <slot></slot>
-    <Forms ref="form" v-bind="formAttrs" :forms="forms" :model="model" @update:model="onChange"></Forms>
+    <f-form ref="form" v-bind="formAttrs" :forms="forms" :model="model" @update:model="onChange"></f-form>
     <div class="op-wrap">
       <el-button v-if="okBtnInner.visible" :loading="loading" @click="onOkClick" type="primary" v-bind="okBtnInner.attr || {}">{{okBtnInner.text}}</el-button>
       <el-button v-if="escBtnInner.visible"  @click="onEscClick" type="text" v-bind="escBtnInner.attr || {}">{{escBtnInner.text}}</el-button>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Forms from './Forms'
+import fForm from './f-form'
 export default {
   props: {
     formAttrs: {
@@ -40,7 +40,7 @@ export default {
     return {loading: false}
   },
   components: {
-    Forms
+    fForm
   },
   computed: {
     okBtnInner () {

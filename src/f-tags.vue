@@ -1,16 +1,14 @@
 <template>
   <div class="f-tags">
-    <div>
-      <el-tag
-        v-for="(tag, index) in values"
-        :key="index + tag"
-        :closable="!readonly && !disabled"
-        @close="del(index)"
-        :type="type || tag.type">
-        {{tag.label || tag}}
-      </el-tag>
-    </div>
-    <div v-if="!readonly && !disabled"><el-input v-model="newStr" v-bind="$attrs" @blur="add" @keydown.native.enter="add"></el-input></div>
+    <el-tag
+      v-for="(tag, index) in values"
+      :key="index + tag"
+      :closable="!readonly && !disabled"
+      @close="del(index)"
+      :type="type || tag.type">
+      {{tag.label || tag}}
+    </el-tag>
+    <el-input class="input-new-tag" size="small" v-if="!readonly && !disabled" v-model="newStr" :placeholder="placeholder" @blur="add" @keydown.native.enter="add"></el-input>
   </div>
 </template>
 
@@ -27,6 +25,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: String,
+      default: '+ new item'
     },
     checkNew: Function
   },
@@ -50,7 +52,7 @@ export default {
       this.onInput(value)
     },
     onInput (val) {
-      return this.$emit('input', val)
+      return this.$emit('input', typeof this.value === 'string' ? val.join(',') : val)
     }
   },
   computed: {
@@ -68,7 +70,14 @@ export default {
 </script>
 
 <style>
-.f-tags .el-tag + .el-tag {
-  margin-left: 10px;
+.f-tags {
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .input-new-tag {
+    width: 100px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
 }
 </style>

@@ -1,4 +1,3 @@
-var webpack = require('webpack')
 var UnminifiedWebpackPlugin = require('unminified-webpack-plugin')
 var path = require('path')
 var VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -38,11 +37,7 @@ var config = {
   devtool: '#source-map',
   plugins: [
     new VueLoaderPlugin(),
-    new UnminifiedWebpackPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      sourceMap: true
-    })
+    new UnminifiedWebpackPlugin()
   ]
 }
 
