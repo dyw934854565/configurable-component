@@ -1,0 +1,29 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import fTags from '../src/f-tags.vue'
+
+<Meta title="f-file" component={fTags} />
+
+## f-tags
+
+Some **markdown** description, or whatever you want.
+
+<Preview>
+  <Story name="Text">
+  {
+    {
+      data() {
+        return {
+          value: "a,b"
+        }
+      },
+      components: { fTags },
+      template: '<fTags v-model="value" />',
+    }
+  }
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={fTags} />
+<Props of={fTags} />
