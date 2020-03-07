@@ -7,6 +7,9 @@ node_js:
 deploy:
   provider: pages
   skip_cleanup: true
+  target_branch: docs
+  local_dir: docs
+  name: travis
   github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
   keep_history: true
   on:
