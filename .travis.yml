@@ -4,7 +4,10 @@ script:
   - npm run build-storybook
 node_js:
   - lts/*
-after_script:
-  - git add -A
-  - git commit -a -m 'update docs'
-  - git push origin master
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
