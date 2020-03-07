@@ -1,6 +1,10 @@
 language: node_js
+script:
+  - npm run test
+  - npm run build-storybook
 node_js:
   - lts/*
 after_script:
-  - npm run build-storybook
-    
+  - git add -A
+  - git commit -a -m 'update docs'
+  - git push origin master
