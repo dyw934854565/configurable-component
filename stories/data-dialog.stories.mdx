@@ -1,0 +1,80 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import dataDialog from '../src/data-dialog.vue'
+
+<Meta title="data-dialog" />
+
+# 弹窗和表单的组合
+
+处理表单的验证，请求中按钮的loading
+
+<Preview>
+  <Story name="使用">
+  {
+    {
+      data () {
+          return {
+              visible: false,
+              title: "",
+              model: {},
+              list: [{name: 'dyw', password: '12345'}, {name: 'dyw123', password: '12345'}],
+              forms: [{
+                    key: 'name',
+                    label: 'name',
+                    rules: [{
+                        required: true, trigger: 'blur'
+                    }]
+                }, {
+                    key: 'password',
+                    label: 'password',
+                    extra: {
+                        type: 'password'
+                    },
+                    rules: [{
+                        required: true, trigger: 'blur'
+                    }]
+                }],
+                onValidate: async () => {
+                    const model = this.model
+                    console.log(model)
+                    const type = this.title
+                    const index = this.editIndex
+                    await new Promise(resolve => setTimeout(resolve, 600))
+                    if (type === '新建') {
+                        this.list.push(model)
+                    } else {
+                        this.list.splice(index, 1, model)
+                    }
+                    this.$message.success(`${type}成功，用户名为：${model.name}, 密码为： ${model.password}`)
+                }
+          }
+      },
+      methods: {
+        newOrEditItem(type = '新建', initData = {}, index) {
+            this.title = type
+            this.editIndex = index
+            this.model = initData
+            this.visible = true
+        }
+      },
+      template: `
+        <div>
+            <el-button @click="newOrEditItem()" >new</el-button>
+            <ul>
+                <li v-for="(item, index) in list">
+                    name: {{item.name}} password: {{item.password}}
+                    <el-button @click="newOrEditItem('修改', item, index)" >edit</el-button>
+                </li>
+            </ul>
+            <dataDialog :model.sync="model" :formAttrs="{'label-width': '140px'}" :title="title" :visible.sync="visible" :forms="forms" :onValidate="onValidate"></dataDialog>
+        </div>
+      `,
+    }
+  }
+  </Story>
+</Preview>
+
+需要自己在模版中写组件，处理visiable等。这个定制化更高一些，如果简单的需求也可以考虑this.$dataDialog，整体实现的功能差不多，使用方式差别比较大。
+
+# Props
+
+<Props of={dataDialog}  />

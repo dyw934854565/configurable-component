@@ -1,6 +1,7 @@
 <template>
   <el-checkbox-group
     v-bind="$attrs"
+    v-on="$listeners"
     :value="values"
     @input="onInput"
     v-loading="loading"
@@ -14,55 +15,10 @@
 </template>
 
 <script>
+import optionsMixin from './mixin/options'
+import arrayOrStringMixin from './mixin/arrayOrString'
 export default {
   inheritAttrs: false,
-  props: {
-    value: {
-      required: true
-    },
-    options: {
-      type: [Array, Function],
-      required: true
-    }
-  },
-  data: () => ({
-    innerOptions: [],
-    loading: false
-  }),
-  methods: {
-    onInput (val) {
-      return this.$emit('input', val.join())
-    },
-    async fetchOption (isInit) {
-      if (typeof this.options !== 'function') {
-        return
-      }
-      this.loading = true
-      try {
-        this.innerOptions = await this.options(isInit)
-      } catch (e) {}
-      this.loading = false
-    }
-  },
-  created () {
-    this.fetchOption(true)
-  },
-  computed: {
-    trueOptions () {
-      if (typeof this.options === 'function') {
-        return this.innerOptions
-      }
-      return this.options
-    },
-    values () {
-      if (this.value === '') {
-        return []
-      }
-      if (typeof this.value === 'string') {
-        return this.value.split(',')
-      }
-      return []
-    }
-  }
+  mixins: [optionsMixin, arrayOrStringMixin]
 }
 </script>

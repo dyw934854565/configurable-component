@@ -13,7 +13,6 @@
   "eslint.options": {
     "extensions": [".js", ".vue"]
   },
-  "stylelint.enable": true,
   "vetur.validation.style": false,
   "vetur.format.styleInitialIndent": true,
   "vetur.format.scriptInitialIndent": true,

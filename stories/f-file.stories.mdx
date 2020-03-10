@@ -1,23 +1,88 @@
 import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
-import fTags from '../src/f-tags.vue'
+import fFile from '../src/f-file.vue'
+import triggerComponent from './triggerComponent.vue'
 
-<Meta title="f-file" component={fTags} />
+<Meta title="f-file" component={fFile} />
 
-## f-tags
+## f-file
 
-Some **markdown** description, or whatever you want.
+# 选单个文件
 
 <Preview>
-  <Story name="Text">
+  <Story name="单个文件">
   {
     {
       data() {
         return {
-          value: "a,b"
+          value: []
         }
       },
-      components: { fTags },
-      template: '<fTags v-model="value" />',
+      components: { fFile },
+      methods: {
+        log(val) {
+            console.log('input', val)
+        }
+      },
+      template: `<fFile tip="只能选一个文件哦" v-model="value" @input="log" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# 选多个文件
+
+<Preview>
+  <Story name="多个文件">
+  {
+    {
+      data() {
+        return {
+          value: []
+        }
+      },
+      components: { fFile },
+      methods: {
+        log(val) {
+            console.log('input', val)
+        }
+      },
+      template: `<fFile v-model="value" multiple @input="log" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# drag
+
+drag and triggerComponent
+
+```javascript
+// triggerComponent.vue
+<template>
+<div>
+  <i class="el-icon-upload"></i>
+  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+</div>
+</template>
+```
+
+<Preview>
+  <Story name="drag">
+  {
+    {
+      data() {
+        return {
+          value: [],
+          triggerComponent // import triggerComponent from './triggerComponent.vue'
+        }
+      },
+      components: { fFile },
+      methods: {
+        log(val) {
+            console.log('input', val)
+        }
+      },
+      template: `<fFile drag :triggerComponent="triggerComponent" v-model="value" @input="log" />`,
     }
   }
   </Story>
@@ -25,5 +90,4 @@ Some **markdown** description, or whatever you want.
 
 # Props
 
-<Props of={fTags} />
-<Props of={fTags} />
+<Props of={fFile} />

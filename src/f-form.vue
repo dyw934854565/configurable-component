@@ -27,7 +27,7 @@ import fRadiobox from './f-radiobox'
 import fTags from './f-tags'
 export default {
   inheritAttrs: false,
-  name: 't-form',
+  name: 'f-form',
   props: {
     forms: {
       type: [Array, Function],

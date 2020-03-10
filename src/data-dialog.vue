@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-bind="$attrs" v-on="$listeners">
+  <el-dialog :append-to-body="true" v-bind="$attrs" v-on="$listeners">
     <slot></slot>
     <f-form ref="form" v-bind="formAttrs" :forms="forms" :model="model" @update:model="onChange"></f-form>
     <div class="op-wrap">

@@ -1,55 +1,33 @@
 <template>
   <el-select
     v-bind="$attrs"
-    :value="value"
-    @input="onInput"
+    v-on="$listeners"
     :loading="loading"
+    :remote-method="remoteMethod"
     @focus="fetchOption(false)"
   >
-    <el-option v-for="option in trueOptions || []" :key="option.value" v-bind="option"></el-option>
+    <template v-for="option in trueOptions">
+      <el-option-group v-if="option.children" :key="option.label" :label="option.label" :disabled="option.disabled">
+        <el-option v-for="optionItem in option.children || []" :key="optionItem.value" v-bind="optionItem"></el-option>
+      </el-option-group>
+      <el-option v-else :key="option.value" v-bind="option"></el-option>
+    </template>
   </el-select>
 </template>
 
 <script>
+import optionsMixin from './mixin/options'
 export default {
   inheritAttrs: false,
-  props: {
-    value: {
-      required: true
-    },
-    options: {
-      type: [Array, Function],
-      required: true
-    }
-  },
-  data: () => ({
-    innerOptions: [],
-    loading: false
-  }),
+  mixins: [optionsMixin],
   methods: {
-    onInput (val) {
-      return this.$emit('input', val)
-    },
-    async fetchOption (isInit) {
-      if (typeof this.options !== 'function') {
-        return
-      }
-      this.loading = true
-      try {
-        this.innerOptions = await this.options(isInit)
-      } catch (e) {}
-      this.loading = false
+    preventFirstFetch () {
+      return this.$attrs.remote && this.$attrs.filterable
     }
-  },
-  created () {
-    this.fetchOption(true)
   },
   computed: {
-    trueOptions () {
-      if (typeof this.options === 'function') {
-        return this.innerOptions
-      }
-      return this.options
+    remoteMethod () {
+      return this.fetchOption.bind(this, false)
     }
   }
 }

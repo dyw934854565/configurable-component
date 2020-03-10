@@ -13,10 +13,10 @@
 </template>
 
 <script>
+import arrayOrStringMixin from './mixin/arrayOrString'
 export default {
   inheritAttrs: false,
   props: {
-    value: [String, Array],
     type: String,
     readonly: {
       type: Boolean,
@@ -32,6 +32,7 @@ export default {
     },
     checkNew: Function
   },
+  mixins: [arrayOrStringMixin],
   data: () => ({
     newStr: ''
   }),
@@ -50,20 +51,6 @@ export default {
       const value = [...this.values, this.newStr]
       this.newStr = ''
       this.onInput(value)
-    },
-    onInput (val) {
-      return this.$emit('input', typeof this.value === 'string' ? val.join(',') : val)
-    }
-  },
-  computed: {
-    values () {
-      if (this.value === '') {
-        return []
-      }
-      if (typeof this.value === 'string') {
-        return this.value.split(',')
-      }
-      return [...this.value]
     }
   }
 }

@@ -11,9 +11,10 @@ addParameters({
     theme: create({
         base: 'light',
         brandTitle: 'configurable-component',
-        brandUrl: 'https://github.com/dyw934854565/configable-component',
+        brandUrl: 'https://github.com/dyw934854565/configurable-component',
     }),
-    // isToolshown: false,
+    isToolshown: false,
+    selectedPanel: 'Docs',
     showPanel: false
   },
   docs: {

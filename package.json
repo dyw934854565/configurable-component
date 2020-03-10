@@ -4,8 +4,9 @@
   "main": "dist/admin.min.js",
   "description": "configable-component base on element-ui, admin components",
   "scripts": {
-    "start": "webpack -w -p",
+    "start": "npm run storybook",
     "test": "jest --coverage",
+    "build": "webpack",
     "eslint": "eslint --fix src",
     "stylelint": "stylelint --fix src",
     "storybook": "start-storybook -p 6006",
@@ -89,7 +90,8 @@
     "vue-loader": "^15.4.1",
     "vue-template-compiler": "^2.6.10",
     "vue-template-es2015-compiler": "^1.9.1",
-    "webpack": "^4.42.0"
+    "webpack": "^4.42.0",
+    "webpack-cli": "^4.0.0-beta.2"
   },
   "pre-commit": {
     "run": "",

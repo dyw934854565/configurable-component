@@ -1,0 +1,69 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import dataTable from '../src/data-table.vue'
+
+<Meta title="data-table" />
+
+# 翻页和表格数据的组合
+
+<Preview>
+  <Story name="简单用法">
+  {
+    {
+      template: `
+        <data-table :cols="cols" :pageInfo="pageInfo" :getData="getData" style="width: 100%">
+        </data-table>
+      `,
+      data() {
+        return {
+          cols: [{
+            prop: 'page',
+            label: '页码'
+          }, {
+            prop: 'date',
+            label: '日期',
+            extra: {
+              width: '180'
+            }
+          }, {
+            prop: 'name',
+            label: '姓名',
+            extra: {
+              width: '180'
+            }
+          }],
+          pageInfo: {
+            layout: 'total, sizes, prev, pager, next, jumper'
+          },
+          async getData (pageInfo) {
+            console.log(pageInfo)
+            await new Promise(resolve => setTimeout(resolve, 600))
+            const total = 35
+            const currentPage = pageInfo.currentPage
+            if (currentPage === 3) {
+                throw new Error('第三页获取失败（设定）')
+            }
+            return {
+                data: Array.from({length: Math.min(pageInfo.pageSize, total - pageInfo.pageSize * (currentPage - 1))}).map(_ => ({
+                    page: `第${currentPage}页`,
+                    date: '2016-05-02 19:00:00',
+                    name: '王小虎'
+                })),
+                total
+            }
+          }
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
+
+# router mode
+
+仅支持params，暂不支持query
+
+传入routerMode，接收pageInfo，返回拼接url。组件会调用$router.push(url)，并对params变化监听，自动重新获取数据
+
+# Props
+
+<Props of={dataTable}  />

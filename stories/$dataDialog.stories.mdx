@@ -1,0 +1,86 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+
+<Meta title="$dataDialog" />
+
+# 对数据进行增改
+
+this.$dataDialog(onValidate, forms, initData, {key, formExtra, msgBox})
+
+onValidate： 表单验证成功后执行的函数
+
+forms： 表单项，数组或者函数
+
+key: vdom diff使用的key，主要用于数据修改后未保存。下次进能是之前编辑过的数据
+
+formExtra： el-form的其他props
+
+msgBox： msgBox配置，详见[message-box](https://element.eleme.cn/#/zh-CN/component/message-box)
+
+<Preview>
+  <Story name="$dataDialog">
+  {
+    {
+      data () {
+          return {
+              list: [{name: 'dyw', password: '12345'}, {name: 'dyw123', password: '12345'}],
+              forms: [{
+                    key: 'name',
+                    label: 'name',
+                    rules: [{
+                        required: true, trigger: 'blur'
+                    }]
+                }, {
+                    key: 'password',
+                    label: 'password',
+                    extra: {
+                        type: 'password'
+                    },
+                    rules: [{
+                        required: true, trigger: 'blur'
+                    }]
+                }],
+                onValidate: async (type, index, model) => {
+                    console.log(model)
+                    await new Promise(resolve => setTimeout(resolve, 600))
+                    if (type === '新建') {
+                        this.list.push(model)
+                    } else {
+                        this.list.splice(index, 1, model)
+                    }
+                    this.$message.success(`${type}成功，用户名为：${model.name}, 密码为： ${model.password}`)
+                }
+          }
+      },
+      methods: {
+        newOrEditItem(type = '新建', initData = {}, index) {
+            this.$dataDialog(
+                this.onValidate.bind(this, type, index),
+                this.forms,
+                initData,
+                {
+                    // key: 'edit', 如果想保持没保存的数据，可以设置key
+                    formExtra: {
+                        'label-width': '140px'
+                    },
+                    msgBox: {
+                        title: type + '数据'
+                    }
+                }
+            )
+        }
+      },
+      template: `
+        <div>
+            <el-button @click="newOrEditItem()" >new</el-button>
+            <ul>
+                <li v-for="(item, index) in list">
+                    name: {{item.name}} password: {{item.password}}
+                    <el-button @click="newOrEditItem('修改', item, index)" >edit</el-button>
+                </li>
+            </ul>
+        </div>
+      `,
+    }
+  }
+  </Story>
+</Preview>

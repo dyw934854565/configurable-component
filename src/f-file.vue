@@ -1,12 +1,16 @@
 <template>
   <el-upload
+    action="#"
     v-bind="$attrs"
-    :value="value"
+    :auto-upload="false"
+    :multiple="multiple"
     :fileList="fileList"
-    :on-change="onChangeBind"
-    :on-remove="onRemoveBind"
+    :onRemove="onRemove"
+    :onChange="onChange"
   >
-    <el-button size="small" class="btn-green">点击上传</el-button>
+    <component v-if="triggerComponent" :is="triggerComponent" />
+    <el-button v-else size="small" class="btn-green">点击上传</el-button>
+    <div v-if="tip" slot="tip" class="el-upload__tip">{{tip}}</div>
   </el-upload>
 </template>
 
@@ -15,20 +19,23 @@ export default {
   inheritAttrs: false,
   props: {
     value: {
-      required: true
+      type: Array
     },
-    'on-change': {
-      type: Function,
-      required: false
+    tip: {
+      type: String,
+      default: ''
     },
-    'on-remove': {
-      type: Function,
-      required: false
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    triggerComponent: {
+      type: String | Function
     }
   },
   computed: {
     fileList () {
-      if (typeof this.value === 'object') {
+      if (typeof this.value === 'object' && this.value) {
         return this.value
       }
       return []
@@ -38,15 +45,11 @@ export default {
     setFileList (fileList) {
       this.$emit('input', fileList)
     },
-    onChangeBind (...args) {
-      if (this.onChange) {
-        this.onChange(this, ...args)
-      }
+    onChange (file, fileList) {
+      this.setFileList(this.multiple ? fileList : [file])
     },
-    onRemoveBind (...args) {
-      if (this.onRemove) {
-        this.onRemove(this, ...args)
-      }
+    onRemove (file, fileList) {
+      this.setFileList(fileList)
     }
   }
 }

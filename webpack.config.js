@@ -9,7 +9,7 @@ var config = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].min.js',
+    filename: 'admin.min.js',
     library: 'Admin',
     libraryTarget: 'umd',
     umdNamedDefine: true

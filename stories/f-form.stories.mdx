@@ -1,10 +1,13 @@
 import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import fForm from '../src/f-form.vue'
+import {Input} from 'element-ui'
 
 <Meta title="f-form" />
 
-## 与原来使用的区别
+# 使用配置完成表单组件的调用
 
 原来的写法
+
 <Preview>
   <Story name="原来的写法">
   {
@@ -12,7 +15,7 @@ import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
       template: `
         <el-form @submit.native.prevent :model="ruleForm" :rules="rules" label-width="100px">
           <el-form-item label="活动名称" prop="name">
-            <el-input v-model="ruleForm.name" placeholder="输入活动名称"></el-input>
+            <el-input v-model="ruleForm.name" clearable placeholder="输入活动名称"></el-input>
           </el-form-item>
         </el-form>
       `,
@@ -34,134 +37,243 @@ import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
   </Story>
 </Preview>
 
-痛点：手写模版内容， el-form-item可以用v-for，但是每次都要重复的去写不方便。rule和form-item分离
+痛点：手写模版内容，el-form-item可以用v-for，但是每次都要重复的去写不方便。rule和form-item分离
 
 改版之后用法
-```javascript
-<Forms :forms="forms" :model="model" label-width="100px" >
-</Forms>
-<script>
-  export default {
-    data() {
-      return {
-        model: {
-        },
-        forms: [
-          {
-            key: 'name',
-            type: 'el-input',
-            default: 'name',
-            extra: {
-              placeholder: '',
-              clearable: true
-            },
-            rules: [
-              { required: true, message: '请输入活动名称', trigger: 'blur' },
-              { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-            ]
-          }
-        ]
+
+<Preview>
+  <Story name="改版之后写法">
+  {
+    {
+      template: `
+        <f-form :forms="forms" :model.sync="model" label-width="100px" ></f-form>
+      `,
+      data() {
+        return {
+          model: {
+          },
+          forms: [
+            {
+              key: 'name',
+              type: 'el-input',
+              default: 'name',
+              label: '活动名称',
+              extra: {
+                placeholder: '请输入活动名称',
+                clearable: true
+              },
+              rules: [
+                { required: true, message: '请输入活动名称', trigger: 'blur' },
+                { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+              ]
+            }
+          ]
+        }
       }
     }
   }
-</script>
-```
+  </Story>
+</Preview>
+
 优点：Forms支持el-form的所有属性；每个表单项和rules在一起，方便查看；可以添加默认值；方便的添加表单组件的其他属性，如el-input的placeholder，内部实现是会把extra使用v-bind到对应的表单组件上
 
-# type 支持组件类型
+type 支持组件类型
 
 ## el-input 输入框  el-switch 开关等一类简单组件
 el-input可在extra中设置type="textarea"
 更多extra可用参数可详见element文档
-## f-select 选择框 f-radiobox f-checkbox f-cascader
+## f-select 选择框 f-radiobox f-checkbox f-cascader f-tags
 因为选择框是要options的所以改写了el-select，新增options属性
 可以是数据，也可以是函数，可以返回promise,意味这可以远程获取选项
-```javascript
-<Forms :forms="forms" :model="model" label-width="100px" >
-</Forms>
-<script>
-  export default {
-    data() {
-      return {
-        model: {
-        },
-        forms: [
-          {
-            key: 'name',
-            type: 'f-select',
-            extra: {
-              options: [
-                {
-                  value: 'a',
-                  label: 'a活动'
-                },
-                {
-                  value: 'b',
-                  label: 'b活动'
-                }
-              ]
-            },
-            rules: [
-              { required: true, message: '请选择活动名称', trigger: 'blur' }
-            ]
-          }
-        ]
-      }
-    }
-  }
-</script>
-```
-## f-file 文件
-使用upload组件，但是upload没有做v-model处理，也就是不能改model里的值，所以重写了一下upload
-是否可多选可以在extra中设置
-新增on-change和on-remove配置，可以在extra中配置
 
-```javascript
-<Forms :forms="forms" :model="model" label-width="100px" >
-</Forms>
-<script>
-  export default {
-    data() {
-      return {
-        model: {
-        },
-        forms: [
-          {
-            key: 'file',
-            type: 'f-file',
-            extra: {
-              multiple: false,
-              'auto-upload': false,
-              'on-change': function (fFile, file, fileList) {
-                fFile.setFileList([file])
-              },
-              'on-remove': function (fFile) {
-                fFile.setFileList([])
+<Preview>
+  <Story name="支持组件类型">
+  {
+    {
+      template: `
+        <f-form :forms="forms" :model.sync="model" label-width="140px" ></f-form>
+      `,
+      data() {
+        const options = [{value: 1, label: '1'}, {value: 2, label: '2'}]
+        return {
+          model: {
+          },
+          forms: [
+            {
+              key: 'input',
+              type: 'el-input',
+              label: 'el-input',
+              extra: {
+                placeholder: 'input'
               }
             },
-            rules: [
-              { required: true, message: '请选择文件', trigger: 'blur' }
-            ]
-          }
-        ]
+            {
+              key: 'textarea',
+              type: 'el-input',
+              label: 'el-input',
+              extra: {
+                placeholder: 'textarea',
+                type: 'textarea'
+              }
+            },
+            {
+              key: 'el-date-picker',
+              type: 'el-date-picker',
+              label: 'el-date-picker'
+            },
+            {
+              key: 'switch',
+              type: 'el-switch',
+              label: 'el-switch',
+            },
+            {
+              key: 'file',
+              type: 'f-file',
+              label: 'f-file',
+            },
+            {
+              key: 'f-tags',
+              type: 'f-tags',
+              default: 'a,b',
+              label: 'f-tags',
+            },
+            {
+              key: 'f-checkbox',
+              type: 'f-checkbox',
+              label: 'f-checkbox',
+              extra: {
+                options
+              }
+            },
+            {
+              key: 'f-radiobox',
+              type: 'f-radiobox',
+              label: 'f-radiobox',
+              extra: {
+                options
+              }
+            },
+            {
+              key: 'f-select',
+              type: 'f-select',
+              label: 'f-select',
+              extra: {
+                options
+              }
+            },
+            {
+              key: 'f-cascader',
+              type: 'f-cascader',
+              label: 'f-cascader',
+              extra: {
+                options: options.map(item => {
+                  return {
+                    ...item,
+                    children: options
+                  }
+                })
+              }
+            }
+          ]
+        }
       }
     }
   }
-</script>
-```
-上面是一个单选的示例
-fFile是f-file组件的实例，一定要调用fFile.setFileList设置文件列表，是改变model里的值
+  </Story>
+</Preview>
 
-setFileList里代码
-```javascript
-setFileList (fileList) {
-  this.$emit('input', fileList)
-}
-```
+# 动态表单项
 
-# 自定义组件
-当组件不能完全满足需求的时候可以，自己开发一个组件。有些产品里的表单操作可能是很复杂的
+forms支持函数
 
-表单组件的核心是在数据改变的时候使用$emit('input')
+自定义组件
 
-写完可以用Vue.component挂在全局组件上
+<Preview>
+  <Story name="动态表单项">
+  {
+    {
+      template: `
+        <f-form :forms="forms" :model.sync="model" label-width="140px" ></f-form>
+      `,
+      data() {
+        const options = [{value: 1, label: '1'}, {value: 2, label: '2'}]
+        return {
+          model: {
+          },
+          forms: (model) => {
+            const dataForms = [
+              {
+                key: 'data',
+                type: 'el-input',
+                label: '参数',
+                extra: {
+                  placeholder: '输入参数'
+                }
+              }
+            ]
+            const commonForms = [{
+              key: 'open',
+              type: 'el-switch',
+              label: '开启',
+            }]
+            return model.open ? [...commonForms, ...dataForms] : commonForms
+          }
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
+
+当组件不能完全满足需求的时候可以，自己开发一个组件。有些产品里的表单项可能是很复杂的
+
+理论上只要能支持v-model的组件都可以作为一个type传入， 为了更好体验，需要再支持readonly， disable等props，还有键盘操作的
+
+内部用的动态组件(component)实现，实际使用的时候可以引入你的组件传到type
+
+自定义的时候可能用到的两个mixin
+
+optionsMixin， 增加options，loading两个props，方便增加options对函数的支持
+
+arrayOrString，方便对value为数组的表单组件，增加对字符串的支持，['a', 'b']， 可以用'a,b'，分隔符可自定义
+
+<Preview>
+  <Story name="自定义组件">
+  {
+    {
+      template: `
+        <f-form :forms="forms" :model.sync="model" label-width="100px" ></f-form>
+      `,
+      data() {
+        return {
+          model: {
+          },
+          forms: [
+            {
+              key: 'name',
+              type: Input, // import {Input} from 'element-ui'
+              default: 'name',
+              label: '活动名称',
+              extra: {
+                placeholder: '请输入活动名称',
+                clearable: true
+              },
+              rules: [
+                { required: true, message: '请输入活动名称', trigger: 'blur' },
+                { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
+
+如果使用的频率较高，可以用Vue.component挂在全局上，type就可以直接用字符串
+
+
+# Props
+
+<Props of={fForm} />

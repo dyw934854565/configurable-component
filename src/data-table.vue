@@ -64,28 +64,31 @@ export default {
     tTable
   },
   methods: {
-    onSizeChange (pageSize) {
-      this.pageInfoInner.currentPage = 1
-      this.pageInfoInner.pageSize = pageSize
+    onChange () {
       if (this.routerMode) {
-        this.routerMode(this.pageInfoInner)
+        const path = this.routerMode(this.pageInfoInner)
+        if (path && typeof path === 'string') {
+          this.$router.push(path)
+        }
       } else {
         this.getDataInner()
       }
     },
+    onSizeChange (pageSize) {
+      this.pageInfoInner.currentPage = 1
+      this.pageInfoInner.pageSize = pageSize
+      this.onChange()
+    },
     onCurrentChange (currentPage) {
       this.pageInfoInner.currentPage = currentPage
-      if (this.routerMode) {
-        this.routerMode(this.pageInfoInner)
-      } else {
-        this.getDataInner()
-      }
+      this.onChange()
     },
     mergePageInfo () {
       this.pageInfoInner = Object.assign({}, this.pageInfoInner, this.pageInfo)
       if (this.routerMode) {
         this.pageInfoInner = Object.assign({}, this.pageInfoInner, {
-          currentPage: Number(this.$route.params.page) || 1
+          currentPage: Number(this.$route.params.currentPage) || this.pageInfoInner.currentPage,
+          pageSize: Number(this.$route.params.pageSize) || this.pageInfoInner.pageSize
         })
       }
     },
@@ -96,6 +99,7 @@ export default {
         this.list = res.data
         this.pageInfoInner.total = res.total
       } catch (e) {
+        this.list = []
         this.$handleError && this.$handleError(e)
       }
       this.loading = false
