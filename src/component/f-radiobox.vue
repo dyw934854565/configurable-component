@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import optionsMixin from './mixin/options'
+import optionsMixin from '../mixin/options'
 export default {
   inheritAttrs: false,
   mixins: [optionsMixin]

@@ -4,7 +4,7 @@
     v-on="$listeners"
     :loading="loading"
     :remote-method="remoteMethod"
-    @focus="fetchOption(false)"
+    @focus="fetchOptions(false)"
   >
     <template v-for="option in trueOptions">
       <el-option-group v-if="option.children" :key="option.label" :label="option.label" :disabled="option.disabled">
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import optionsMixin from './mixin/options'
+import optionsMixin from '../mixin/options'
 export default {
   inheritAttrs: false,
   mixins: [optionsMixin],
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     remoteMethod () {
-      return this.fetchOption.bind(this, false)
+      return this.fetchOptions.bind(this, false)
     }
   }
 }

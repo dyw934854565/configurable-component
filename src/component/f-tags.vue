@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import arrayOrStringMixin from './mixin/arrayOrString'
+import arrayOrStringMixin from '../mixin/arrayOrString'
 export default {
   inheritAttrs: false,
   props: {

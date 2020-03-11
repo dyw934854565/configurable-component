@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import optionsMixin from './mixin/options'
-import arrayOrStringMixin from './mixin/arrayOrString'
+import optionsMixin from '../mixin/options'
+import arrayOrStringMixin from '../mixin/arrayOrString'
 export default {
   inheritAttrs: false,
   mixins: [optionsMixin, arrayOrStringMixin]

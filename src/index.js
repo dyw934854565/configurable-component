@@ -1,11 +1,10 @@
-import tTable from './t-table'
-import fForm from './f-form'
-import dataTable from './data-table'
-import dataDialog from './data-dialog.vue'
-import $dataDialog from './data-dialog.js'
+import tTable from './component/t-table'
+import fForm from './component/f-form'
+import dataTable from './component/data-table'
+import dataDialog from './component/data-dialog.vue'
+import $dataDialog from './api/data-dialog.js'
 import optionsMixin from './mixin/options'
 import arrayOrStringMixin from './mixin/arrayOrString'
-
 export default {
   arrayOrStringMixin,
   optionsMixin,

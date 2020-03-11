@@ -1,5 +1,5 @@
 import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
-import tTable from '../src/t-table'
+import tTable from '../src/component/t-table'
 
 <Meta title="t-table" />
 
@@ -173,7 +173,8 @@ import tTable from '../src/t-table'
               return {
                 label: '查看详情',
                 icon: 'el-icon-view',
-                href: 'javascript: void 0;'
+                href: location.href,
+                target: '_blank'
               }
             },
             extra: {
@@ -209,6 +210,54 @@ import tTable from '../src/t-table'
   </Story>
 </Preview>
 
+## 远程数据
+
+<Preview>
+  <Story name="远程数据">
+  {
+    {
+      template: `
+      <div>
+        <el-button @click="$refs.table.fetchData()">刷新远程数据</el-button>
+        <t-table ref="table" :cols="cols" :data="getData" style="width: 100%">
+        </t-table>
+      </div>
+      `,
+      data() {
+        return {
+          cols: [{
+            prop: 'date',
+            label: '日期',
+            extra: {
+              width: '180'
+            }
+          }, {
+            prop: 'name',
+            label: '姓名',
+            extra: {
+              width: '180'
+            }
+          }],
+          getData: async function () {
+            await new Promise(resolve => setTimeout(resolve, 600))
+            return [{
+              date: '2016-05-02 19:00:00',
+              name: '王小虎',
+              't-switch': 1,
+              't-tag': '家'
+            }, {
+              date: '2016-05-03 19:00:00',
+              name: '王小虎',
+              't-switch': 0,
+              't-tag': '公司'
+            }]
+          }
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
 
 # 自定义组件
 当组件不能完全满足需求的时候可以，自己开发一个组件。可能组件需要稍微改动一下，事件监听，变成传callback更方便一些

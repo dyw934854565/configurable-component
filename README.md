@@ -1,14 +1,21 @@
 # configurable-component
 
 [![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]](travis-url)
+[![Build Status][travis-image]][travis-url]
 [![NPM Download][dt-image]][npm-url]
 
 ## 是个组件库
 
 基于[element-ui](https://element.eleme.cn/#/zh-CN/component/layout)二次封装，现阶段主要处理表单和表格，快速完成增删改查操作。
 
-[组件文档](https://dyw934854565.github.io/configurable-component/)，目前用的github page，有点慢
+[组件文档](https://dyw934854565.github.io/configurable-component/)，目前用的github page，有点慢。或者拉代码本地查看文档
+
+```shell
+git clone https://github.com/dyw934854565/configurable-component.git
+cd configurable-component
+npm install
+npm start
+```
 
 ## 简化原理
 
@@ -70,4 +77,4 @@ MIT License
 [npm-image]: https://badge.fury.io/js/configurable-component.png
 [travis-image]: https://travis-ci.com/dyw934854565/configurable-component.svg?branch=master
 [travis-url]: https://travis-ci.com/dyw934854565/configurable-component
-[dt-image]:https://img.shields.io/npm/dt/configurable-component.svg
+[dt-image]: https://img.shields.io/npm/dt/configurable-component.svg

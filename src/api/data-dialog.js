@@ -1,5 +1,5 @@
 
-import fForm from './f-form'
+import fForm from '../component/f-form'
 
 export default {
   install (Vue) {

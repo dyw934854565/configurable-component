@@ -4,13 +4,13 @@
     v-on="$listeners"
     :options="trueOptions"
     :loading="loading"
-    @focus="fetchOption(false)"
+    @focus="fetchOptions(false)"
   >
   </el-cascader>
 </template>
 
 <script>
-import optionsMixin from './mixin/options'
+import optionsMixin from '../mixin/options'
 export default {
   inheritAttrs: false,
   mixins: [optionsMixin]
