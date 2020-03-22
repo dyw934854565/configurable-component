@@ -109,8 +109,8 @@ export default {
       this.setModel(newModel)
     },
     setModel (model) {
-      this.$emit('change', model)
       this.$emit('update:model', model)
+      this.$emit('change', model)
     }
   }
 }
