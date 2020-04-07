@@ -201,22 +201,20 @@ forms支持函数
           model: {
           },
           forms: (model) => {
-            const dataForms = [
-              {
-                key: 'data',
-                type: 'el-input',
-                label: '参数',
-                extra: {
-                  placeholder: '输入参数'
-                }
-              }
-            ]
-            const commonForms = [{
+            return [{
               key: 'open',
               type: 'el-switch',
               label: '开启',
+            },
+            {
+              key: 'data',
+              type: 'el-input',
+              label: '参数',
+              visible: Boolean(model.open),
+              extra: {
+                placeholder: '输入参数'
+              }
             }]
-            return model.open ? [...commonForms, ...dataForms] : commonForms
           }
         }
       }

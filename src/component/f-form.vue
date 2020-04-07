@@ -34,6 +34,11 @@ export default {
       required: false,
       default: () => []
     },
+    filter: {
+      type: Function,
+      required: false,
+      default: form => form.visible !== false
+    },
     model: Object
   },
   components: {
@@ -44,9 +49,6 @@ export default {
     fRadiobox,
     fTags
   },
-  data () {
-    return {trueForms: []}
-  },
   computed: {
     rules () {
       const rules = {}
@@ -54,27 +56,24 @@ export default {
         rules[form.key] = form.rules
       })
       return rules
+    },
+    trueForms () {
+      if (typeof this.forms === 'function') {
+        return this.forms(this.model).filter(this.filter)
+      }
+      return this.forms.filter(this.filter)
+    }
+  },
+  watch: {
+    trueForms () {
+      this.setDefault()
     }
   },
   created () {
     this.setDefault()
-    this.$watch('forms', this.setDefault.bind(this))
-    this.$watch('model', () => {
-      if (typeof this.forms === 'function') {
-        this.trueForms = this.forms(this.model)
-      }
-    })
   },
   methods: {
-    setTrueForms () {
-      if (typeof this.forms === 'function') {
-        this.trueForms = this.forms(this.model)
-        return
-      }
-      this.trueForms = this.forms
-    },
     setDefault () {
-      this.setTrueForms()
       let changed = false
       const model = Object.assign({}, this.model)
       this.trueForms.forEach(form => {

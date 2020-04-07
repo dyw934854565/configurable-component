@@ -4,7 +4,6 @@
     v-on="$listeners"
     :loading="loading"
     :remote-method="remoteMethod"
-    @focus="fetchOptions(false)"
   >
     <template v-for="option in trueOptions">
       <el-option-group v-if="option.children" :key="option.label" :label="option.label" :disabled="option.disabled">

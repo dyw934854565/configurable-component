@@ -2581,7 +2581,7 @@ var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
       default: false
     },
     triggerComponent: {
-      type: String | Function
+      type: [String, Function]
     }
   },
   computed: {

@@ -4,7 +4,6 @@
     v-on="$listeners"
     :options="trueOptions"
     :loading="loading"
-    @focus="fetchOptions(false)"
   >
   </el-cascader>
 </template>
