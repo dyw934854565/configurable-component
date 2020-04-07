@@ -30,7 +30,7 @@ export default {
       default: false
     },
     triggerComponent: {
-      type: String | Function
+      type: [String, Function]
     }
   },
   computed: {

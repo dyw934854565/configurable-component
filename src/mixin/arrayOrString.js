@@ -1,7 +1,7 @@
 export default {
   props: {
     value: {
-      type: String | Array
+      type: [String, Array]
     },
     separator: {
       type: String,
