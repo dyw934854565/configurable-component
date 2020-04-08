@@ -3934,11 +3934,31 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
 
 
 
+
+
+
+
+
+
+
+
+
+
 /* harmony default export */ var src = __webpack_exports__["default"] = ({
   arrayOrStringMixin: arrayOrString,
   optionsMixin: options,
   tTable: t_table,
   fForm: f_form,
+  fCascader: f_cascader,
+  fCheckbox: f_checkbox,
+  fFile: f_file,
+  fSelect: f_select,
+  fRadiobox: f_radiobox,
+  fTags: f_tags,
+  tLink: t_link,
+  tTag: t_tag,
+  tBtns: t_btns,
+  tSwitch: t_switch,
   dataTable: data_table,
   dataDialog: data_dialog,
   install: function install(Vue) {

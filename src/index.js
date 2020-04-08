@@ -5,11 +5,34 @@ import dataDialog from './component/data-dialog.vue'
 import $dataDialog from './api/data-dialog.js'
 import optionsMixin from './mixin/options'
 import arrayOrStringMixin from './mixin/arrayOrString'
+
+import fCascader from './component/f-cascader'
+import fCheckbox from './component/f-checkbox'
+import fFile from './component/f-file'
+import fSelect from './component/f-select'
+import fRadiobox from './component/f-radiobox'
+import fTags from './component/f-tags'
+
+import tLink from './component/t-link'
+import tTag from './component/t-tag'
+import tBtns from './component/t-btns'
+import tSwitch from './component/t-switch'
+
 export default {
   arrayOrStringMixin,
   optionsMixin,
   tTable,
   fForm,
+  fCascader,
+  fCheckbox,
+  fFile,
+  fSelect,
+  fRadiobox,
+  fTags,
+  tLink,
+  tTag,
+  tBtns,
+  tSwitch,
   dataTable,
   dataDialog,
   install (Vue) {
