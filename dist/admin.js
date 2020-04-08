@@ -1717,7 +1717,24 @@ var render = function() {
                           ? _c(
                               col.component,
                               _vm._b(
-                                { tag: "component" },
+                                {
+                                  tag: "component",
+                                  on: {
+                                    input: function($event) {
+                                      var _obj
+                                      return _vm.$emit(
+                                        "updateRow",
+                                        Object.assign(
+                                          {},
+                                          scope.row,
+                                          ((_obj = {}),
+                                          (_obj[col.prop] = $event),
+                                          _obj)
+                                        )
+                                      )
+                                    }
+                                  }
+                                },
                                 "component",
                                 _vm.makeData(
                                   col.value,
@@ -3220,8 +3237,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       var changed = false;
       var model = Object.assign({}, this.model);
       this.trueForms.forEach(function (form) {
-        if (form.default) {
-          if (_this.model[form.key] === undefined) {
+        if (typeof form.default !== 'undefined') {
+          if (typeof _this.model[form.key] === 'undefined') {
             changed = true;
             model[form.key] = form.default;
           }

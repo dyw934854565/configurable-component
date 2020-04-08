@@ -94,7 +94,7 @@ el-input可在extra中设置type="textarea"
         <f-form :forms="forms" :model.sync="model" label-width="140px" ></f-form>
       `,
       data() {
-        const options = [{value: 1, label: '1'}, {value: 2, label: '2'}]
+        const options = [{value: 0, label: '0'}, {value: 2, label: '2'}]
         return {
           model: {
           },
@@ -157,6 +157,7 @@ el-input可在extra中设置type="textarea"
               key: 'f-select',
               type: 'f-select',
               label: 'f-select',
+              default: 0,
               extra: {
                 options
               }

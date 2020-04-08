@@ -2,7 +2,7 @@
   <el-table v-bind="$attrs" v-loading="loading" :data="trueData" v-on="$listeners">
     <el-table-column v-for="col in cols" :key="col.prop" :prop="col.prop" :label="col.label" v-bind="col.extra || {}">
       <template slot-scope="scope">
-        <component v-if="col.component" :is="col.component" v-bind="makeData(col.value, scope.row[col.prop], scope)"></component>
+        <component @input="$emit('updateRow', {...scope.row, [col.prop]: $event})" v-if="col.component" :is="col.component" v-bind="makeData(col.value, scope.row[col.prop], scope)"></component>
         <span v-else>{{ makeData(col.value, scope.row[col.prop], scope) }}</span>
       </template>
     </el-table-column>

@@ -77,8 +77,8 @@ export default {
       let changed = false
       const model = Object.assign({}, this.model)
       this.trueForms.forEach(form => {
-        if (form.default) {
-          if (this.model[form.key] === undefined) {
+        if (typeof form.default !== 'undefined') {
+          if (typeof this.model[form.key] === 'undefined') {
             changed = true
             model[form.key] = form.default
           }
