@@ -1,4 +1,4 @@
-
+import Vue from 'vue'
 export interface HandleError {
   (err: boolean): void
   (err: string): void

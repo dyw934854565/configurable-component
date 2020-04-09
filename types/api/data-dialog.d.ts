@@ -1,7 +1,10 @@
+import Vue from 'vue'
+import  {ElMessageBoxOptions} from 'element-ui/types/message-box'
+import {Form} from 'element-ui'
 /** Options used in DataDialog */
 export interface DataDialogOptions {
   /** onValidate function */
-  onValidate: Function
+  onValidate: (model: Object) => Promise<any>
 
   /** forms Array */
   forms: any[]
@@ -10,10 +13,10 @@ export interface DataDialogOptions {
   key?: string
 
   /** Custom class name for Message */
-  formExtra?: Object
+  formExtra?: Form
 
   /** msgBox */
-  msgBox?: Object
+  msgBox?: ElMessageBoxOptions
 }
 
 declare module 'vue/types/vue' {
