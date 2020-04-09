@@ -4,7 +4,7 @@ import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
 
 # 对数据进行增改
 
-this.$dataDialog(onValidate, forms, initData, {key, formExtra, msgBox})
+this.$dataDialog({onValidate, forms, initData, key, formExtra, msgBox})
 
 onValidate： 表单验证成功后执行的函数
 
@@ -54,10 +54,10 @@ msgBox： msgBox配置，详见[message-box](https://element.eleme.cn/#/zh-CN/co
       methods: {
         newOrEditItem(type = '新建', initData = {}, index) {
             this.$dataDialog(
-                this.onValidate.bind(this, type, index),
-                this.forms,
-                initData,
                 {
+                    onValidate: this.onValidate.bind(this, type, index),
+                    forms: this.forms,
+                    initData,
                     // key: 'edit', 如果想保持没保存的数据，可以设置key
                     formExtra: {
                         'label-width': '140px'

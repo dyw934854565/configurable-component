@@ -3802,6 +3802,25 @@ var data_dialog_component = normalizeComponent(
 if (false) { var data_dialog_api; }
 data_dialog_component.options.__file = "src/component/data-dialog.vue"
 /* harmony default export */ var data_dialog = (data_dialog_component.exports);
+// CONCATENATED MODULE: ./src/api/handle-error.js
+/* harmony default export */ var handle_error = ({
+  install: function install(Vue) {
+    Vue.prototype.$handleError = function (err) {
+      if (err === false) return;
+      var message = '';
+
+      if (typeof err === 'string') {
+        message = err;
+      } else if (err && err.message) {
+        message = err.message;
+      }
+
+      if (message) {
+        this.$message.error(message);
+      }
+    };
+  }
+});
 // CONCATENATED MODULE: ./src/api/data-dialog.js
 
 
@@ -3848,12 +3867,15 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
     var dialogCounter = 0;
 
     Vue.prototype.$dataDialog = /*#__PURE__*/function () {
-      var _$dataDialog = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(onValidate) {
+      var _$dataDialog = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
         var _this2 = this;
 
-        var forms,
+        var _ref,
+            onValidate,
+            _ref$forms,
+            forms,
+            _ref$initialData,
             initialData,
-            _ref,
             _ref$key,
             key,
             _ref$formExtra,
@@ -3870,9 +3892,7 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                forms = _args.length > 1 && _args[1] !== undefined ? _args[1] : [];
-                initialData = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-                _ref = _args.length > 3 && _args[3] !== undefined ? _args[3] : {}, _ref$key = _ref.key, key = _ref$key === void 0 ? '' : _ref$key, _ref$formExtra = _ref.formExtra, formExtra = _ref$formExtra === void 0 ? {} : _ref$formExtra, _ref$msgBox = _ref.msgBox, msgBox = _ref$msgBox === void 0 ? {} : _ref$msgBox;
+                _ref = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, onValidate = _ref.onValidate, _ref$forms = _ref.forms, forms = _ref$forms === void 0 ? [] : _ref$forms, _ref$initialData = _ref.initialData, initialData = _ref$initialData === void 0 ? {} : _ref$initialData, _ref$key = _ref.key, key = _ref$key === void 0 ? '' : _ref$key, _ref$formExtra = _ref.formExtra, formExtra = _ref$formExtra === void 0 ? {} : _ref$formExtra, _ref$msgBox = _ref.msgBox, msgBox = _ref$msgBox === void 0 ? {} : _ref$msgBox;
                 h = this.$createElement;
                 props = {
                   forms: forms,
@@ -3910,7 +3930,7 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
                   }
                 })));
 
-              case 8:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -3918,7 +3938,7 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
         }, _callee, this);
       }));
 
-      function $dataDialog(_x) {
+      function $dataDialog() {
         return _$dataDialog.apply(this, arguments);
       }
 
@@ -3927,6 +3947,7 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
   }
 });
 // CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -3966,26 +3987,12 @@ function data_dialog_objectSpread(target) { for (var i = 1; i < arguments.length
       throw new Error('element ui should be install first');
     }
 
-    Vue.prototype.$handleError = function (err) {
-      if (err === false) return;
-      var message = '';
-
-      if (typeof err === 'string') {
-        message = err;
-      } else if (err && err.message) {
-        message = err.message;
-      }
-
-      if (message) {
-        this.$message.error(message);
-      }
-    };
-
     Vue.component('tTable', t_table);
     Vue.component('fForm', f_form);
     Vue.component('dataTable', data_table);
     Vue.component('dataDialog', data_dialog);
     Vue.use(api_data_dialog);
+    Vue.use(handle_error);
   }
 });
 

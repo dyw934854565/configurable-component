@@ -29,7 +29,14 @@ export default {
       }
     })
     let dialogCounter = 0
-    Vue.prototype.$dataDialog = async function $dataDialog (onValidate, forms = [], initialData = {}, {key = '', formExtra = {}, msgBox = {}} = {}) {
+    Vue.prototype.$dataDialog = async function $dataDialog ({
+      onValidate,
+      forms = [],
+      initialData = {},
+      key = '',
+      formExtra = {},
+      msgBox = {}
+    } = {}) {
       const h = this.$createElement
       const props = {
         forms,

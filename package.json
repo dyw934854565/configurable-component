@@ -1,6 +1,6 @@
 {
   "name": "configurable-component",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/admin.min.js",
   "description": "configable-component base on element-ui, admin components",
   "scripts": {
@@ -12,8 +12,10 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -o docs"
   },
+  "typings": "types/index.d.ts",
   "files": [
     "src",
+    "types",
     "dist"
   ],
   "repository": {
