@@ -1,7 +1,8 @@
 <template>
   <div class="data-table">
-    <slot></slot>
-    <t-table v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners"/>
+    <t-table v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners">
+      <slot></slot>
+    </t-table>
     <div class="clearfix">
       <el-pagination
         class="pull-right"
@@ -82,6 +83,9 @@ export default {
     onCurrentChange (currentPage) {
       this.pageInfoInner.currentPage = currentPage
       this.onChange()
+    },
+    fetchData () {
+      return this.getDataInner()
     },
     mergePageInfo () {
       this.pageInfoInner = Object.assign({}, this.pageInfoInner, this.pageInfo)

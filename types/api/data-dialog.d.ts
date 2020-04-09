@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import  {ElMessageBoxOptions} from 'element-ui/types/message-box'
 import {Form} from 'element-ui'
+import {FFormForms} from '../component/f-form'
 /** Options used in DataDialog */
 export interface DataDialogOptions {
   /** onValidate function */
   onValidate: (model: Object) => Promise<any>
 
-  /** forms Array */
-  forms: any[]
+  /** forms Array or Function */
+  forms: FFormForms
 
   /** key */
   key?: string

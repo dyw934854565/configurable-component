@@ -3316,8 +3316,6 @@ var data_tablevue_type_template_id_4a6cf516_render = function() {
     "div",
     { staticClass: "data-table" },
     [
-      _vm._t("default"),
-      _vm._v(" "),
       _c(
         "t-table",
         _vm._g(
@@ -3339,7 +3337,9 @@ var data_tablevue_type_template_id_4a6cf516_render = function() {
             false
           ),
           _vm.$listeners
-        )
+        ),
+        [_vm._t("default")],
+        2
       ),
       _vm._v(" "),
       _c(
@@ -3365,7 +3365,7 @@ var data_tablevue_type_template_id_4a6cf516_render = function() {
         1
       )
     ],
-    2
+    1
   )
 }
 var data_tablevue_type_template_id_4a6cf516_staticRenderFns = []
@@ -3377,6 +3377,7 @@ data_tablevue_type_template_id_4a6cf516_render._withStripped = true
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/component/data-table.vue?vue&type=script&lang=js&
 
 
+//
 //
 //
 //
@@ -3469,6 +3470,9 @@ data_tablevue_type_template_id_4a6cf516_render._withStripped = true
     onCurrentChange: function onCurrentChange(currentPage) {
       this.pageInfoInner.currentPage = currentPage;
       this.onChange();
+    },
+    fetchData: function fetchData() {
+      return this.getDataInner();
     },
     mergePageInfo: function mergePageInfo() {
       this.pageInfoInner = Object.assign({}, this.pageInfoInner, this.pageInfo);
