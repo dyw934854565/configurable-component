@@ -1,6 +1,7 @@
 <template>
   <div class="data-table">
-    <t-table v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners">
+    <t-table page @sort-change="onSortChange" @refresh="refreshData" :error="fetchError" v-loading="loading" v-bind="$attrs" :cols="cols" :data="list" @filter-change="onFilterChange" v-on="$listeners">
+      <template slot="pre-column"><slot name="pre-column"></slot></template>
       <slot></slot>
     </t-table>
     <div class="clearfix">
@@ -16,6 +17,13 @@
 
 <script>
 import tTable from './t-table'
+const defaultInner = {
+  currentPage: 1,
+  total: 0,
+  pageSize: 10,
+  pageSizes: [10, 20, 50, 100],
+  layout: 'total, prev, pager, next, jumper'
+}
 export default {
   props: {
     cols: {
@@ -29,8 +37,8 @@ export default {
       default: () => ({})
     },
     routerMode: {
-      type: Function,
-      required: false
+      type: Boolean,
+      default: false
     },
     getData: {
       type: Function,
@@ -40,26 +48,31 @@ export default {
   data () {
     return {
       loading: false,
+      fetchError: false,
       list: [],
       filterOption: {},
-      pageInfoInner: {
-        currentPage: 1,
-        total: 0,
-        pageSize: 10,
-        pageSizes: [10, 20, 50, 100],
-        layout: 'total, prev, pager, next, jumper'
-      }
+      sortOption: {},
+      pageInfoInner: {...defaultInner}
+    }
+  },
+  watch: {
+    cols () {
+      this.pageInfoInner = {...defaultInner}
     }
   },
   created () {
+    const defaultSort = this.$attrs['default-sort'] || this.$attrs['defaultSort']
+    if (defaultSort && defaultSort.prop) {
+      this.sortOption = {[defaultSort.prop]: defaultSort.order || 'ascending'}
+    }
     this.mergePageInfo()
     this.getDataInner()
-    if (this.routerMode) {
-      this.$watch('$route', () => {
-        this.mergePageInfo()
-        this.getDataInner()
-      })
-    }
+    // if (this.routerMode) {
+    //   this.$watch('$route', () => {
+    //     this.mergePageInfo()
+    //     this.getDataInner()
+    //   })
+    // }
   },
   components: {
     tTable
@@ -67,13 +80,16 @@ export default {
   methods: {
     onChange () {
       if (this.routerMode) {
-        const path = this.routerMode(this.pageInfoInner)
-        if (path && typeof path === 'string') {
-          this.$router.push(path)
-        }
-      } else {
-        this.getDataInner()
+        // const path = this.routerMode(this.pageInfoInner)
+        this.$router.push({
+          query: {
+            ...this.$route.query,
+            pageSize: this.pageInfoInner.pageSize,
+            currentPage: this.pageInfoInner.currentPage
+          }
+        })
       }
+      this.getDataInner()
     },
     onSizeChange (pageSize) {
       this.pageInfoInner.currentPage = 1
@@ -84,29 +100,40 @@ export default {
       this.pageInfoInner.currentPage = currentPage
       this.onChange()
     },
-    fetchData () {
+    refreshData () {
       return this.getDataInner()
     },
     mergePageInfo () {
       this.pageInfoInner = Object.assign({}, this.pageInfoInner, this.pageInfo)
       if (this.routerMode) {
         this.pageInfoInner = Object.assign({}, this.pageInfoInner, {
-          currentPage: Number(this.$route.params.currentPage) || this.pageInfoInner.currentPage,
-          pageSize: Number(this.$route.params.pageSize) || this.pageInfoInner.pageSize
+          currentPage: Number(this.$route.query.currentPage) || this.pageInfoInner.currentPage,
+          pageSize: Number(this.$route.query.pageSize) || this.pageInfoInner.pageSize
         })
       }
     },
     async getDataInner () {
       this.loading = true
+      this.fetchError = false
       try {
-        const res = await this.getData(this.pageInfoInner, this.filterOption)
+        const res = await this.getData({pageInfo: this.pageInfoInner, filterOption: this.filterOption, sortOption: this.sortOption})
         this.list = res.data
         this.pageInfoInner.total = res.total
       } catch (e) {
         this.list = []
+        this.fetchError = true
         this.$handleError && this.$handleError(e)
       }
       this.loading = false
+    },
+    onSortChange ({order, prop}) {
+      const sortOption = {}
+      if (order) {
+        sortOption[prop] = order
+      }
+      this.sortOption = sortOption
+      this.pageInfoInner.currentPage = 1
+      return this.getDataInner()
     },
     onFilterChange (filterOption) {
       this.filterOption = filterOption

@@ -17,10 +17,19 @@ import dataTable from '../src/component/data-table.vue'
         return {
           cols: [{
             prop: 'page',
-            label: '页码'
+            label: '页码',
+            extra: {
+              width: 80
+            }
           }, {
-            prop: 'date',
-            label: '日期',
+            prop: 'date[0]',
+            label: '开始日期',
+            extra: {
+              width: '180'
+            }
+          }, {
+            prop: 'date[1]',
+            label: '结束日期',
             extra: {
               width: '180'
             }
@@ -34,7 +43,7 @@ import dataTable from '../src/component/data-table.vue'
           pageInfo: {
             layout: 'total, sizes, prev, pager, next, jumper'
           },
-          async getData (pageInfo) {
+          async getData ({pageInfo}) {
             console.log(pageInfo)
             await new Promise(resolve => setTimeout(resolve, 600))
             const total = 35
@@ -45,7 +54,74 @@ import dataTable from '../src/component/data-table.vue'
             return {
                 data: Array.from({length: Math.min(pageInfo.pageSize, total - pageInfo.pageSize * (currentPage - 1))}).map(_ => ({
                     page: `第${currentPage}页`,
-                    date: '2016-05-02 19:00:00',
+                    date: ['2016-05-02 19:00:00', '2016-05-02 19:00:00'],
+                    name: '王小虎'
+                })),
+                total
+            }
+          }
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
+
+# sort
+
+<Preview>
+  <Story name="sort">
+  {
+    {
+      template: `
+        <data-table :cols="cols" :pageInfo="pageInfo" :getData="getData" style="width: 100%">
+        </data-table>
+      `,
+      data() {
+        return {
+          cols: [{
+            prop: 'page',
+            label: '页码',
+            extra: {
+              width: 80
+            }
+          }, {
+            prop: 'date[0]',
+            label: '开始日期',
+            extra: {
+              width: '180'
+            }
+          }, {
+            prop: 'date[1]',
+            label: '结束日期',
+            extra: {
+              width: '180'
+            }
+          }, {
+            prop: 'name',
+            label: '姓名',
+            extra: {
+              width: '180',
+            },
+            colExtra: {
+              sortable: true
+            }
+          }],
+          pageInfo: {
+            layout: 'total, sizes, prev, pager, next, jumper'
+          },
+          async getData ({pageInfo, sortOption}) {
+            console.log(pageInfo, sortOption)
+            await new Promise(resolve => setTimeout(resolve, 600))
+            const total = 35
+            const currentPage = pageInfo.currentPage
+            if (currentPage === 3) {
+                throw new Error('第三页获取失败（设定）')
+            }
+            return {
+                data: Array.from({length: Math.min(pageInfo.pageSize, total - pageInfo.pageSize * (currentPage - 1))}).map(_ => ({
+                    page: `第${currentPage}页`,
+                    date: ['2016-05-02 19:00:00', '2016-05-02 19:00:00'],
                     name: '王小虎'
                 })),
                 total
@@ -59,10 +135,6 @@ import dataTable from '../src/component/data-table.vue'
 </Preview>
 
 # router mode
-
-仅支持params，暂不支持query
-
-传入routerMode，接收pageInfo，返回拼接url。组件会调用$router.push(url)，并对params变化监听，自动重新获取数据
 
 # Props
 

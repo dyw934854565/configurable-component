@@ -1,0 +1,43 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import fCascader from '../src/component/f-cascader.vue'
+
+<Meta title="f-cascader" component={fCascader} />
+
+
+
+## 懒加载数据
+
+<Preview>
+  <Story name="懒加载数据">
+  {
+    {
+      data() {
+        return {
+          value: [],
+          props: {
+            lazy: true,
+            lazyLoad({node}) {
+              console.log({node})
+              return [{
+                label: 'a',
+                value: 'a',
+                leaf: true
+              }]
+            }
+          }
+        }
+      },
+      components: { fCascader },
+      methods: {
+        log(val) {
+            console.log('input', val)
+        }
+      },
+      template: `<fCascader :props="props" v-model="value" @input="log" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+
+

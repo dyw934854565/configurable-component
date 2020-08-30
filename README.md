@@ -36,10 +36,14 @@ npm start
 其slot不仅可以放字符串，还可以放一些自定义模版。对于基础组件来说，它要满足各种奇葩的需求，保证可扩展性是很重要的一件事。
 
 ```vue
-<el-option>
-    <span style="float: left">{{ item.label }}</span>
-    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-</el-option>
+<template>
+<el-select>
+    <el-option :value="item.value" v-for="item in options">
+        <span style="float: left">{{ item.label }}</span>
+        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+    </el-option>
+</el-select>
+</template>
 ```
 
 这样对于自定义需求来说极为方便，但是，对于el-select来说，大部分需求，只需要简单默认模版，每次都要拿到options数组自己写一遍v-for，很浪费时间。
@@ -50,12 +54,22 @@ npm start
 
 大概使用如下：
 ```vue
-<el-option>
-    <component v-if="item.component" :is="item.component" :label="item.label" :value="item.value" v-bind="item.extra || {}">
-    <template v-else>
-        {{item.label}}
-    <template>
-</el-option>
+<template>
+<el-select>
+    <el-option :value="item.value" v-for="item in options">
+        <component
+            v-if="item.component"
+            :is="item.component"
+            :label="item.label"
+            v-bind="item.props || {}"
+            v-on="item.listeners || {}"
+        />
+        <template v-else>
+            {{item.label}}
+        <template>
+    </el-option>
+<el-select>
+<template>
 ```
 
 item.component可以是字符串(已注册组件的名字)或一个组件的选项对象(从.vue文件import/Vue.extend的返回值)。
@@ -63,6 +77,118 @@ item.component可以是字符串(已注册组件的名字)或一个组件的选�
 想扩展没那么方便了，但是带来的收益也很明显。对于一个项目来说，扩展内容一般会一致，保证用户体验一致，所以使用component也不一定不好，也可能是更方便。
 
 这样写，可能会多很多v-if，可能有一些性能问题，这个具体没测。未来考虑
+
+这样我们基于这个可以封装自己的select
+
+```vue
+<template>
+<my-select
+    :value="value"
+    :options="[{value: 'value', label: 'label'}]"
+>
+<my-select>
+<template>
+```
+
+当我们能解决了select这种表单项的可复用性问题
+
+我们可以基于此做配置项的form组件
+
+```vue
+<template>
+<my-form
+    :model.sync="model"
+    :forms="[{key: 'sex', component: 'my-select', label: 'label', extra: {}, listeners: {onChange: () => {}}}]"
+>
+<my-form>
+<template>
+```
+
+## 事件处理
+
+```vue
+<template>
+<component
+    v-if="item.component"
+    :is="item.component"
+    v-bind="item.props || {}"
+    v-on="item.listeners || {}"
+/>
+<template>
+
+```
+
+转化成函数参数
+
+```vue
+<template>
+<el-button :loading="loading"  @click="onClick">
+    submit
+</el-button>
+<template>
+
+<script>
+export default {
+    props: {
+        onSubmit: {
+            type: Function,
+            required: true
+        }
+    },
+    data() {
+        return { loading: false };
+    },
+    methods: {
+        async onClick() {
+            try {
+                this.loading = true;
+                await this.onSubmit();
+            } catch (e) {
+                this.$message.error(e.message)
+            }
+            this.loading = false;
+        }
+    }
+}
+</script>
+```
+
+```javascript
+methods: {
+    newOrEditItem(type = '新建', initData = {}, index) {
+        this.$dataDialog(
+            {
+                onValidate: this.editOrSave.bind(this),
+                forms: this.forms,
+                initData,
+                // key: 'edit', 如果想保持没保存的数据，可以设置key
+                formExtra: {
+                    'label-width': '140px'
+                },
+                msgBox: {
+                    title: type + this.title
+                }
+            }
+        )
+    }
+}
+```
+
+## 数据获取
+
+```vue
+<template>
+<el-table :loading="loading"  @data="[]">
+</el-table>
+<template>
+```
+
+```vue
+<template>
+<el-table  @data="function() {return Promise<[]>}">
+</el-table>
+<template>
+```
 
 ## 测试用例
 

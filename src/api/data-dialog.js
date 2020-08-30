@@ -69,6 +69,7 @@ export default {
               .catch(e => {
                 instance.confirmButtonLoading = false
                 this.$handleError && this.$handleError(e)
+                return done(e)
               })
           } else {
             done()

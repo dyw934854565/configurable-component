@@ -1,0 +1,43 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import tSwitch from '../src/component/t-switch.vue'
+
+<Meta title="t-switch" component={tSwitch} />
+
+## t-switch
+
+<Preview>
+  <Story name="简单用法">
+  {
+    {
+      data() {
+        return {
+          value: true
+        }
+      },
+      template: '<t-switch confirm v-model="value" />',
+    }
+  }
+  </Story>
+</Preview>
+
+## handle
+
+<Preview>
+  <Story name="handle">
+  {
+    {
+      data() {
+        return {
+          value: true,
+          handle: a => alert(String(a))
+        }
+      },
+      template: '<t-switch :handle="handle" confirm v-model="value" />',
+    }
+  }
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={tSwitch} />

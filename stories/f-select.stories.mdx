@@ -67,7 +67,7 @@ import fSelect from '../src/component/f-select.vue'
 
 ## 远程数据
 
-options传入函数，获取远程数据，返回Promise。初始化会调用，每次focus会调用，根据options的第一个参数isInit判断
+options传入函数，获取远程数据，返回Promise。初始化会调用，每次focus时候会判断，如果失败会再次调用
 
 <Preview>
   <Story name="获取远程数据">
@@ -76,10 +76,12 @@ options传入函数，获取远程数据，返回Promise。初始化会调用，
       data() {
         return {
           value: 1,
-          options: async (isInit) => {
-            if (isInit) return [] // 如果初始化可以不获取数据
+          options: async () => {
             // 重复获取的问题，可以自己加缓存
             await new Promise(resolve => setTimeout(resolve, 2000))
+            if ((Math.random() * 100 | 0) < 50) {
+              throw new Error('随机网络错误')
+            }
             return [{value: 1, label: 1}, {value: 2, label: 2}, {value: 3, label: 3, disabled: true}]
           }
         }
@@ -96,6 +98,36 @@ options传入函数，获取远程数据，返回Promise。初始化会调用，
   </Story>
 </Preview>
 
+## valueKey
+
+适用于结果需要一个对象
+
+<Preview>
+  <Story name="valueKey">
+  {
+    {
+      data() {
+        return {
+          value: [],
+          options: async () => {
+            // 重复获取的问题，可以自己加缓存
+            await new Promise(resolve => setTimeout(resolve, 200))
+            return [{value: 1, label: 1}, {value: 2, label: 2}, {value: 3, label: 3, disabled: true}]
+          }
+        }
+      },
+      components: { fSelect },
+      methods: {
+        log(val) {
+            console.log('input', val)
+        }
+      },
+      template: `<fSelect multiple value-key="id" :options="options" v-model="value" @input="log" />`,
+    }
+  }
+  </Story>
+</Preview>
+
 远程搜索数据， remote + filterable。还是在options中处理，不用传remoteMethod，注意接收第二个参数，query是当前用户输入
 这种情况下，初始化不会获取数据
 不用自己处理loading
@@ -107,8 +139,7 @@ options传入函数，获取远程数据，返回Promise。初始化会调用，
       data() {
         return {
           value: 1,
-          options: async (isInit, query = '') => {
-            console.log('options', isInit, query)
+          options: async (query = '') => {
             await new Promise(resolve => setTimeout(resolve, 600))
             return [{value: '123', label: '123'}, {value: '23', label: '23'}, {value: '345', label: '345', disabled: true}]
                 .filter(item => {

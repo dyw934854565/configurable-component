@@ -15,11 +15,11 @@ export default {
   },
   computed: {
     values () {
-      if (!this.value) {
-        return []
-      }
       if (typeof this.value === 'string') {
         return this.value.split(this.separator)
+      }
+      if (!this.value) {
+        return []
       }
       return this.value
     }

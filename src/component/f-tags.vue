@@ -15,6 +15,7 @@
 <script>
 import arrayOrStringMixin from '../mixin/arrayOrString'
 export default {
+  name: 'fTags',
   inheritAttrs: false,
   props: {
     type: String,

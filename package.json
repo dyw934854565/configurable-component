@@ -1,6 +1,6 @@
 {
   "name": "configurable-component",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "main": "dist/admin.min.js",
   "description": "configable-component base on element-ui, admin components",
   "scripts": {
@@ -76,6 +76,7 @@
     "express": "^4.16.3",
     "http-proxy-middleware": "^0.18.0",
     "jest": "^24.9.0",
+    "moment": "^2.26.0",
     "postcss-loader": "^3.0.0",
     "pre-commit-with-lint": "^1.2.5",
     "precss": "^3.1.2",
@@ -103,5 +104,12 @@
       "jest": ".test.js$"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "date-format": "^3.0.0",
+    "file-saver": "^2.0.2",
+    "lodash.get": "^4.4.2",
+    "lodash.isempty": "^4.4.0",
+    "lodash.isequal": "^4.5.0",
+    "lodash.mapvalues": "^4.6.0"
+  }
 }

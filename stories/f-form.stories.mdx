@@ -1,6 +1,7 @@
 import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
 import fForm from '../src/component/f-form.vue'
 import {Input} from 'element-ui'
+import myLabel from './myLabel.vue'
 
 <Meta title="f-form" />
 
@@ -117,6 +118,15 @@ el-input可在extra中设置type="textarea"
               }
             },
             {
+              key: 'el-input-number',
+              type: 'el-input-number',
+              label: 'el-input-number',
+              default: 123,
+              extra: {
+                placeholder: 'el-input-number'
+              }
+            },
+            {
               key: 'el-date-picker',
               type: 'el-date-picker',
               label: 'el-date-picker'
@@ -203,15 +213,15 @@ forms支持函数
           },
           forms: (model) => {
             return [{
-              key: 'open',
+              key: 'close',
               type: 'el-switch',
-              label: '开启',
+              label: '是否关闭',
             },
             {
               key: 'data',
               type: 'el-input',
               label: '参数',
-              visible: Boolean(model.open),
+              hidden: 'model.close',
               extra: {
                 placeholder: '输入参数'
               }
@@ -223,6 +233,176 @@ forms支持函数
   }
   </Story>
 </Preview>
+
+# 联动表单项
+
+函数 select
+
+
+<Preview>
+  <Story name="联动表单项">
+  {
+    {
+      template: `
+        <f-form :forms="forms" :model.sync="model" label-width="140px" ></f-form>
+      `,
+      data() {
+        const options = [{value: 1, label: '1'}, {value: 2, label: '2'}]
+        return {
+          model: {
+          },
+          forms: [{
+            key: 'province',
+            type: 'f-select',
+            label: '省',
+            extra: {
+              options: [
+                {
+                  value: '江西',
+                  label: '江西',
+                },
+                {
+                  value: '广东',
+                  label: '广东',
+                }
+              ]
+            }
+          },
+          {
+            key: 'City',
+            type: 'f-select',
+            label: '市',
+            extra: {
+              options: (model) => {
+                this.$message.success('市级选项已更新');
+                const all = [{
+                  value: '吉安',
+                  label: '吉安',
+                  province: '江西'
+                }, {
+                  value: '南昌',
+                  label: '南昌',
+                  province: '江西'
+                }, {
+                  value: '深圳',
+                  label: '深圳',
+                  province: '广东'
+                }, {
+                  value: '广州',
+                  label: '广州',
+                  province: '广东'
+                }]
+                if (!model.province) {
+                  return []
+                }
+                return all.filter(item => item.province === model.province)
+              }
+            }
+          },
+          {
+            key: 'other',
+            type: 'f-select',
+            label: '不相关（水果）',
+            extra: {
+              options: [
+                {
+                  value: '🍉',
+                  label: '🍉',
+                },
+                {
+                  value: '🍑',
+                  label: '🍑',
+                }
+              ]
+            }
+          }]
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
+
+
+# labelComponent
+
+labelComponent
+
+<Preview>
+  <Story name="label使用组件">
+  {
+    {
+      template: `
+        <f-form :forms="forms" :model.sync="model" label-width="140px" ></f-form>
+      `,
+      data() {
+        const options = [{value: 1, label: '1'}, {value: 2, label: '2'}]
+        return {
+          model: {
+          },
+          forms: [{
+            key: 'province',
+            type: 'f-select',
+            label: '省',
+            labelComponent: myLabel,
+            labelExtra: {
+              onClose: () => {
+                alert('onclose');
+              }
+            },
+            extra: {
+              options: [
+                {
+                  value: '江西',
+                  label: '江西',
+                },
+                {
+                  value: '广东',
+                  label: '广东',
+                }
+              ]
+            }
+          },
+          {
+            key: 'City',
+            type: 'f-select',
+            label: '市',
+            labelComponent: myLabel,
+            extra: {
+              options: (model) => {
+                this.$message.success('市级选项已更新');
+                const all = [{
+                  value: '吉安',
+                  label: '吉安',
+                  province: '江西'
+                }, {
+                  value: '南昌',
+                  label: '南昌',
+                  province: '江西'
+                }, {
+                  value: '深圳',
+                  label: '深圳',
+                  province: '广东'
+                }, {
+                  value: '广州',
+                  label: '广州',
+                  province: '广东'
+                }]
+                if (!model.province) {
+                  return []
+                }
+                return all.filter(item => item.province === model.province)
+              }
+            }
+          }]
+        }
+      }
+    }
+  }
+  </Story>
+</Preview>
+
+# 自定义组件
 
 当组件不能完全满足需求的时候可以，自己开发一个组件。有些产品里的表单项可能是很复杂的
 

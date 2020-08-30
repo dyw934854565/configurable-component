@@ -1,28 +1,29 @@
 <template>
   <div>
-    <el-button @click="onClick(btn)" :key="btn.label" v-bind="btn.extra" v-for="btn in (btns || [])">{{btn.label}}</el-button>
+    <t-btn :row="row" :col="col" :key="btn.label" v-bind="btn" v-for="btn in (btns || [])"></t-btn>
   </div>
 </template>
 
 <script>
+import tBtn from './t-btn'
 export default {
+  name: 'tBtns',
   props: {
     btns: {
       type: Array,
       required: true
     },
-    scope: Object
-  },
-  methods: {
-    async onClick (btn) {
-      if (btn.handle) {
-        try {
-          await btn.handle(this.scope)
-        } catch (e) {
-          this.$handleError && this.$handleError(e, '操作失败')
-        }
-      }
+    row: {
+      type: Object,
+      default: () => ({})
+    },
+    col: {
+      type: Object,
+      default: () => ({})
     }
+  },
+  components: {
+    tBtn
   }
 }
 </script>

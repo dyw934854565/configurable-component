@@ -7,8 +7,8 @@
     v-loading="loading"
   >
     <el-checkbox
-      v-for="option in trueOptions || []"
-      :key="option.value"
+      v-for="(option, index) in trueOptions || []"
+      :key="typeof option.value === 'object' ? index : option.value"
       :label="option.label">
     </el-checkbox>
   </el-checkbox-group>
@@ -18,6 +18,7 @@
 import optionsMixin from '../mixin/options'
 import arrayOrStringMixin from '../mixin/arrayOrString'
 export default {
+  name: 'fCheckbox',
   inheritAttrs: false,
   mixins: [optionsMixin, arrayOrStringMixin]
 }

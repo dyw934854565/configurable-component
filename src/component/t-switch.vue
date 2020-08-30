@@ -1,27 +1,21 @@
 <template>
-  <div>
-    <el-switch @input="onChange" v-bind="$attrs"></el-switch>
-  </div>
+    <el-switch @input="onHandle" v-bind="$attrs"></el-switch>
 </template>
 
 <script>
+import handle from '../mixin/handle'
 export default {
+  name: 'tSwitch',
   props: {
     handle: {
-      type: Function
-    },
-    scope: Object
-  },
-  methods: {
-    async onChange (val) {
-      if (this.handle) {
-        try {
-          await this.handle(val, this.scope)
-        } catch (e) {
-          this.$handleError && this.$handleError(e, '操作失败')
-        }
+      type: [Function, Object],
+      required: false,
+      default: function (val) {
+        this.$emit('input', val)
       }
     }
-  }
+  },
+  inheritAttrs: false,
+  mixins: [handle]
 }
 </script>

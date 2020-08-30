@@ -1,0 +1,608 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import editPage from '../src/component/edit-page.vue'
+import Admin from '../src'
+import moment from 'moment'
+import createModel from './model.js'
+
+<Meta title="edit-page" component={editPage} />
+
+## edit-page
+
+# 不带分页
+
+<Preview>
+  <Story name="不带分页">
+  {
+    {
+      data() {
+        return {
+          settings: [{
+            key: 'id',
+            label: '分类id',
+            canAdd: false,
+            // canFilter: true
+          }, {
+            key: 'name',
+            label: '名称'
+          }, {
+            key: 'weight',
+            label: '权重',
+            default: 100,
+          }, {
+            key: 'status',
+            label: '状态',
+            formComponent: {
+              component: 'f-select',
+              extra: {
+                options: [
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ],
+                clearable: true
+              }
+            },
+            value: val => {
+              return {
+                value: val,
+                options: [
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ]
+              }
+            },
+            tableComponent: {
+              component: 'f-select'
+            }
+          }],
+          model: createModel({
+            initData: [{
+              name: 'he',
+              id: 1,
+              weight: 100,
+              status: 1
+            }, {
+              name: 'he2',
+              id: 2,
+              weight: 90,
+              status: 1
+            }],
+            page: false
+          })
+        }
+      },
+      template: `<edit-page showIndex :page="false" v-bind="model" title="分类" :settings="settings" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# 带分页
+
+<Preview>
+  <Story name="带分页">
+  {
+    {
+      data() {
+        return {
+          settings: [{
+            key: 'id',
+            label: '分类id',
+            canAdd: false,
+            canFilter: true
+          }, {
+            key: 'name',
+            label: '名称'
+          }, {
+            key: 'weight',
+            label: '权重',
+            default: 100,
+          }, {
+            key: 'status',
+            label: '状态',
+            canFilter: true,
+            filterComponent: {
+              component: 'f-select',
+              extra: {
+                options: [
+                  {
+                      value: '',
+                      label: '全部'
+                  },
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ],
+                clearable: true
+              }
+            },
+            formComponent: {
+              component: 'f-select',
+              extra: {
+                options: [
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ],
+                clearable: true
+              }
+            },
+            value: val => {
+              return {
+                value: val,
+                options: [
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ]
+              }
+            },
+            tableComponent: {
+              component: 'f-select'
+            }
+          }],
+          model: createModel({
+            initData: Array.from({length: 14}, (_, id) => ({
+              id,
+              name: 'name_' + id,
+              weight: 100 - id,
+              status: Math.random() * 3 | 0
+            })),
+          })
+        }
+      },
+      template: `<edit-page showIndex v-bind="model" title="分类" :settings="settings" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+
+
+# 动态参数
+
+<Preview>
+  <Story name="动态参数">
+  {
+    {
+      data() {
+        return {
+          settings: [{
+            key: 'id',
+            label: '分类id',
+            canAdd: false,
+            canFilter: true
+          }, {
+            key: 'name',
+            label: '名称'
+          }, {
+            key: 'open',
+            label: '是否开启详情',
+            formComponent: {
+              component: 'el-switch'
+            }
+          }, {
+            key: 'desc',
+            label: '详情',
+            // visible: model => model.open
+            formComponent: {
+              extra: {
+                disabled: ({model}) => !model.open
+              }
+            }
+          }, {
+            key: 'weight',
+            label: '权重',
+            default: 100,
+          }, {
+            key: 'status',
+            label: '状态',
+            canFilter: true,
+            filterComponent: {
+              component: 'f-select',
+              extra: {
+                options: [
+                  {
+                      value: '',
+                      label: '全部'
+                  },
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ],
+                clearable: true
+              }
+            },
+            formComponent: {
+              component: 'f-select',
+              extra: {
+                options: [
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ],
+                clearable: true
+              }
+            },
+            value: val => {
+              return {
+                value: val,
+                options: [
+                  {
+                      value: 0,
+                      label: '正式'
+                  },
+                  {
+                      value: 1,
+                      label: '预发布'
+                  },
+                  {
+                      value: 2,
+                      label: '未上架'
+                  }
+                ]
+              }
+            },
+            tableComponent: {
+              component: 'f-select'
+            }
+          }],
+          model: createModel({
+            initData: Array.from({length: 14}, (_, id) => ({
+              id,
+              name: 'name_' + id,
+              weight: 100 - id,
+              status: Math.random() * 3 | 0
+            })),
+          })
+        }
+      },
+      template: `<edit-page v-bind="model" title="分类" :settings="settings" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# 下载按钮
+
+download
+
+<Preview>
+  <Story name="download">
+  {
+    {
+      data() {
+        return {
+          extendsMap: {
+            time: {
+              canAdd: false,
+              value: val => val ? moment(val).format('YYYY-MM-DD HH:mm:ss') : '--'
+            },
+            weight: {
+              key: 'weight',
+              label: '权重',
+              default: 100,
+            },
+            status: {
+              key: 'status',
+              label: '状态',
+              canFilter: true,
+              filterComponent: {
+                component: 'f-radiobox',
+                extra: {
+                  options: [
+                    {
+                        value: '',
+                        label: '全部'
+                    },
+                    {
+                        value: 0,
+                        label: '正式'
+                    },
+                    {
+                        value: 1,
+                        label: '预发布'
+                    },
+                    {
+                        value: 2,
+                        label: '未上架'
+                    }
+                  ],
+                  clearable: true
+                }
+              },
+              formComponent: {
+                component: 'f-select',
+                extra: {
+                  options: [
+                    {
+                        value: 0,
+                        label: '正式'
+                    },
+                    {
+                        value: 1,
+                        label: '预发布'
+                    },
+                    {
+                        value: 2,
+                        label: '未上架'
+                    }
+                  ],
+                  clearable: true
+                }
+              },
+              value: val => {
+                return {
+                  value: val,
+                  options: [
+                    {
+                        value: 0,
+                        label: '正式'
+                    },
+                    {
+                        value: 1,
+                        label: '预发布'
+                    },
+                    {
+                        value: 2,
+                        label: '未上架'
+                    }
+                  ]
+                }
+              },
+              tableComponent: {
+                component: 'f-select'
+              }
+            }
+          },
+          settings: [{
+            key: 'id',
+            label: '分类id',
+            canAdd: false,
+            canFilter: true
+          }, {
+            key: 'name',
+            label: '名称'
+          }, {
+            key: 'createTime',
+            label: '创建时间',
+            extends: 'time'
+          }, {
+            key: 'updateTime',
+            label: '更新时间',
+            extends: 'time'
+          },
+          'weight',
+          'status'
+          ],
+          model: createModel({
+            initData: [{
+              name: 'he',
+              id: 1,
+              weight: 100,
+              status: 1
+            }, {
+              name: 'he2',
+              id: 2,
+              weight: 90,
+              status: 1
+            }],
+            page: false
+          }),
+          download: {
+            label: 'download',
+            handle: () => {
+              return {data: 'qweqew'}
+            }
+          }
+        }
+      },
+      template: `<edit-page :download="download" :extendsMap="extendsMap" :page="false" v-bind="model" title="分类" :settings="settings" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# 使用extends
+
+给edit-page传入extendsMap,或者在全局设置Vue.prototype.$extendsMap
+
+就可以在settings中中使用extends,一些通用的，如时间,status,图片，音频，可以用extends简化配置
+
+<Preview>
+  <Story name="extend">
+  {
+    {
+      data() {
+        return {
+          extendsMap: {
+            time: {
+              canAdd: false,
+              value: val => val ? moment(val).format('YYYY-MM-DD HH:mm:ss') : '--'
+            },
+            weight: {
+              key: 'weight',
+              label: '权重',
+              default: 100,
+            },
+            status: {
+              key: 'status',
+              label: '状态',
+              canFilter: true,
+              filterComponent: {
+                component: 'f-radiobox',
+                extra: {
+                  options: [
+                    {
+                        value: '',
+                        label: '全部'
+                    },
+                    {
+                        value: 0,
+                        label: '正式'
+                    },
+                    {
+                        value: 1,
+                        label: '预发布'
+                    },
+                    {
+                        value: 2,
+                        label: '未上架'
+                    }
+                  ],
+                  clearable: true
+                }
+              },
+              formComponent: {
+                component: 'f-select',
+                extra: {
+                  options: [
+                    {
+                        value: 0,
+                        label: '正式'
+                    },
+                    {
+                        value: 1,
+                        label: '预发布'
+                    },
+                    {
+                        value: 2,
+                        label: '未上架'
+                    }
+                  ],
+                  clearable: true
+                }
+              },
+              value: val => {
+                return {
+                  value: val,
+                  options: [
+                    {
+                        value: 0,
+                        label: '正式'
+                    },
+                    {
+                        value: 1,
+                        label: '预发布'
+                    },
+                    {
+                        value: 2,
+                        label: '未上架'
+                    }
+                  ]
+                }
+              },
+              tableComponent: {
+                component: 'f-select'
+              }
+            }
+          },
+          settings: [{
+            key: 'id',
+            label: '分类id',
+            canAdd: false,
+            canFilter: true
+          }, {
+            key: 'name',
+            label: '名称'
+          }, {
+            key: 'createTime',
+            label: '创建时间',
+            extends: 'time'
+          }, {
+            key: 'updateTime',
+            label: '更新时间',
+            extends: 'time'
+          },
+          'weight',
+          'status'
+          ],
+          model: createModel({
+            initData: [{
+              name: 'he',
+              id: 1,
+              weight: 100,
+              status: 1
+            }, {
+              name: 'he2',
+              id: 2,
+              weight: 90,
+              status: 1
+            }],
+            page: false
+          })
+        }
+      },
+      template: `<edit-page :extendsMap="extendsMap" :page="false" v-bind="model" title="分类" :settings="settings" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={editPage} />

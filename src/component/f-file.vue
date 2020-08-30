@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  name: 'fFile',
   inheritAttrs: false,
   props: {
     value: {
@@ -30,7 +31,7 @@ export default {
       default: false
     },
     triggerComponent: {
-      type: [String, Function]
+      type: [String, Function, Object]
     }
   },
   computed: {

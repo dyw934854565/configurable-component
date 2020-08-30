@@ -39,6 +39,9 @@ import dataDialog from '../src/component/data-dialog.vue'
                     const type = this.title
                     const index = this.editIndex
                     await new Promise(resolve => setTimeout(resolve, 600))
+                    if ((Math.random() * 100 | 0) < 50) {
+                        throw new Error('随机网络错误')
+                    }
                     if (type === '新建') {
                         this.list.push(model)
                     } else {

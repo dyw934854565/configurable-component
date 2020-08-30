@@ -1,0 +1,58 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import tDataMap from '../src/component/t-data-map.vue';
+
+<Meta title="t-data-map" />
+
+## f-tags
+
+支持select的展示
+
+<Preview>
+  <Story name="select">
+  {
+    {
+      data() {
+        return {
+          value: "a",
+          map: {a: 'aLabel'}
+        }
+      },
+      template: '<t-data-map :value="value" :map="map"></t-data-map>',
+    }
+  }
+  </Story>
+</Preview>
+
+## f-tags
+
+支持Cascader的展示
+
+<Preview>
+  <Story name="Cascader">
+  {
+    {
+      data() {
+        return {
+          value: ['anim', 'tiger'],
+          map: [{
+            value: 'anim',
+            label: '动物',
+            children: [{
+              value: 'tiger',
+              label: '老虎',
+            }, {
+              value: 'lion',
+              label: '狮子',
+            }]
+          }]
+        }
+      },
+      template: '<t-data-map :value="value" :map="map"></t-data-map>',
+    }
+  }
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={tDataMap} />

@@ -1,5 +1,7 @@
 import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
 import tTable from '../src/component/t-table'
+import fTags from '../src/component/f-tags'
+import fSelect from '../src/component/f-select'
 
 <Meta title="t-table" />
 
@@ -51,7 +53,7 @@ import tTable from '../src/component/t-table'
   {
     {
       template: `
-        <t-table :cols="cols" :data="tableData" style="width: 100%">
+        <t-table @click.native="reverseCols" :cols="cols" :data="tableData" style="width: 100%">
         </t-table>
       `,
       data() {
@@ -76,6 +78,12 @@ import tTable from '../src/component/t-table'
             date: '2016-05-03 19:00:00',
             name: '王小虎'
           }]
+        }
+      },
+      methods: {
+        reverseCols() {
+          console.log(this.cols);
+          this.cols = this.cols.reverse();
         }
       }
     }
@@ -100,11 +108,36 @@ import tTable from '../src/component/t-table'
       data() {
         return {
           cols: [{
+            prop: 'index',
+            label: '序号',
+            colExtra: {
+              type: 'index'
+            }
+          }, {
             prop: 'date',
             label: '日期',
             extra: {
               width: '180'
             }
+          }, {
+            prop: 'date',
+            label: 't-date',
+            component: 't-date',
+            extra: {
+              format: 'yyyy-MM-dd',
+              width: '180'
+            }
+          }, {
+            prop: 'color',
+            label: 't-color',
+            component: 't-color',
+          }, {
+            prop: 'desc',
+            label: 't-long-text',
+            component: 't-long-text',
+            extra: {
+              width: '180px'
+            },
           }, {
             prop: 'name',
             label: '姓名',
@@ -123,26 +156,42 @@ import tTable from '../src/component/t-table'
                     handle: async scope => {
                       // 按钮被点击的处理方法
                       await this.$confirm('确认复制', '提醒')
+                      this.$message.success('复制成功')
                     },
-                    extra: {
-                      // 其余参数，参考el-button
-                      size: 'mini'
-                    }
+                    // 其余参数，参考el-button
+                    size: 'mini'
                   },
                   {
                     label: '删除',
                     handle: async scope => {
                       // 按钮被点击的处理方法
                       await this.$confirm('确认删除', '提醒')
+                      this.$message.success('成功')
                     },
-                    extra: {
-                      // 其余参数，参考el-button
-                      size: 'mini',
-                      type: 'danger'
-                    }
+                    // 其余参数，参考el-button
+                    size: 'mini',
+                    type: 'danger'
                   }
-                ],
-                scope
+                ]
+              }
+            },
+            extra: {
+              width: '200'
+            }
+          }, {
+            prop: 't-btn',
+            label: 't-btn',
+            component: 't-btn',
+            value: (val, scope) => {
+              return {
+                label: '复制',
+                confirm: true,
+                handle: async scope => {
+                  // 按钮被点击的处理方法
+                  this.$message.success('复制成功')
+                },
+                // 其余参数，参考el-button
+                size: 'mini'
               }
             },
             extra: {
@@ -155,14 +204,13 @@ import tTable from '../src/component/t-table'
             value: (val, scope) => {
               return {
                 value: Boolean(val),
-                handle: async (val, scope) => {
+                handle: async (val) => {
                   // 按钮被点击的处理方法
                   console.log(val)
                   await this.$alert('switch change: ' + val)
                   // 实际场景是更新远程数据再改本地数据或重新获取数据刷新
                   this.tableData[scope.$index][scope.column.property] = Number(val)
-                },
-                scope
+                }
               }
             }
           }, {
@@ -173,7 +221,7 @@ import tTable from '../src/component/t-table'
               return {
                 label: '查看详情',
                 icon: 'el-icon-view',
-                href: location.href,
+                href: 'http://baidu.com?a=${row.name}',
                 target: '_blank'
               }
             },
@@ -191,17 +239,75 @@ import tTable from '../src/component/t-table'
                 type: typeMap[val]
               }
             }
+          }, {
+            prop: 'f-tags',
+            label: 'f-tags',
+            component: fTags,
+            extra: {
+              width: '180px'
+            },
+            value(value) {
+              return {
+                value,
+                readonly: true
+              }
+            }
+          }, {
+            prop: 't-preview',
+            label: 't-preview',
+            component: 't-preview',
+            extra: {
+              width: '200px'
+            },
+            value(value) {
+              return {
+                value,
+                width: 200,
+                title: 'ffqwef',
+                href: 'http://baidu.com'
+              }
+            }
           }],
           tableData: [{
             date: '2016-05-02 19:00:00',
             name: '王小虎',
             't-switch': 1,
-            't-tag': '家'
+            't-tag': '家',
+            'desc': '简单',
+            'f-tags': 'ks, ky',
+            'color': 'red',
+            't-preview': 'https://js-ky.static.yximgs.com/mediacloud/suo_test/image/_8z29t8gf07PKDE-Wfze07MD961jCOU8I6DwtklAzf0.png'
           }, {
             date: '2016-05-03 19:00:00',
             name: '王小虎',
             't-switch': 0,
-            't-tag': '公司'
+            't-tag': '公司',
+            'desc': `从明天起，做一个幸福的人
+                  喂马、劈柴，周游世界
+                  从明天起，关心粮食和蔬菜
+                  我有一所房子，面朝大海，春暖花开
+                  从明天起，和每一个亲人通信
+                  告诉他们我的幸福
+                  那幸福的闪电告诉我的
+                  我将告诉每一个人
+                  给每一条河每一座山取一个温暖的名字
+                  陌生人，我也为你祝福
+                  愿你有一个灿烂的前程
+                  愿你有情人终成眷属
+                  愿你在尘世获得幸福
+                  我只愿面朝大海，春暖花开`,
+            'f-tags': 'ks, ky',
+            'color': '#000',
+            't-preview': 'https://js-ky.video.yximgs.com/mediacloud/suo_test/suo_video/kWjallT2L0QeIFl3xw_3tz6TPAqCV_-Ah6BgyBWk8r4.mp4'
+          }, {
+            date: '2016-05-03 19:00:00',
+            name: '王小虎',
+            't-switch': 0,
+            't-tag': '公司',
+            'desc': '简单',
+            'color': 'rgba(2, 2, 2, 0.5)',
+            'f-tags': 'ks, ky',
+            't-preview': 'http://ali2.a.yximgs.com/udata/music/bm_i3hUi9N9NgQ_v.m4a'
           }]
         }
       }
@@ -218,7 +324,7 @@ import tTable from '../src/component/t-table'
     {
       template: `
       <div>
-        <el-button @click="$refs.table.fetchData()">刷新远程数据</el-button>
+        <el-button @click="$refs.table.refreshData()">刷新远程数据</el-button>
         <t-table ref="table" :cols="cols" :data="getData" style="width: 100%">
         </t-table>
       </div>
@@ -237,9 +343,22 @@ import tTable from '../src/component/t-table'
             extra: {
               width: '180'
             }
+          }, {
+            prop: 't-tag',
+            label: 't-tag',
+            component: 't-tag',
+            extra: {
+              width: '180',
+              filters: [{ text: '家', value: '家' }, { text: '公司', value: '公司' }],
+              filterMultiple: false
+            }
           }],
-          getData: async function () {
+          getData: async function (tableFilter) {
+            console.log(tableFilter);
             await new Promise(resolve => setTimeout(resolve, 600))
+            if ((Math.random() * 100 | 0) < 30) {
+              throw new Error('随机网络错误')
+            }
             return [{
               date: '2016-05-02 19:00:00',
               name: '王小虎',
@@ -250,7 +369,9 @@ import tTable from '../src/component/t-table'
               name: '王小虎',
               't-switch': 0,
               't-tag': '公司'
-            }]
+            }].filter(item => {
+              return !tableFilter || !tableFilter['t-tag'] || !tableFilter['t-tag'].length || tableFilter['t-tag'].includes(item['t-tag'])
+            })
           }
         }
       }
@@ -267,8 +388,7 @@ import tTable from '../src/component/t-table'
     {
       template: `
       <div>
-        <el-button @click="$refs.table.fetchData()">刷新远程数据</el-button>
-        <t-table @updateRow="updateRow" ref="table" :cols="cols" :data="getData" style="width: 100%">
+        <t-table :onUpdateRow="onUpdateRow" :cols="cols" :data="tableData" style="width: 100%">
         </t-table>
       </div>
       `,
@@ -284,18 +404,30 @@ import tTable from '../src/component/t-table'
             prop: 'name',
             label: '姓名',
             component: 'el-input',
+            extra: {
+              width: '180'
+            }
+          }, {
+            prop: 't-tag',
+            label: '位置',
+            component: fSelect,
             value: value => {
                 return {
-                  value
+                  value,
+                  options: [{
+                    value: '家',
+                    label: '家',
+                  }, {
+                    value: '公司',
+                    label: '公司',
+                  }]
                 }
             },
             extra: {
               width: '180'
             }
           }],
-          getData: async function () {
-            await new Promise(resolve => setTimeout(resolve, 600))
-            return [{
+          tableData: [{
               date: '2016-05-02 19:00:00',
               name: '王小虎',
               't-switch': 1,
@@ -306,12 +438,12 @@ import tTable from '../src/component/t-table'
               't-switch': 0,
               't-tag': '公司'
             }]
-          }
         }
       },
       methods: {
-        updateRow(row) {
-            this.$message.info('数据修改为：' + JSON.stringify(row));
+        onUpdateRow(newRow, scope) {
+            this.$message.info('数据修改为：' + JSON.stringify(newRow));
+            this.tableData.splice(scope.$index, 1, newRow);
         },
       }
     }
