@@ -75,7 +75,7 @@ export default {
       return this.$emit('input', res)
     },
     preventFirstFetch () {
-      return this.$attrs.remote && this.$attrs.filterable
+      return typeof this.$attrs.remote !== 'undefined' && typeof this.$attrs.filterable !== 'undefined'
     }
   },
   computed: {
@@ -105,7 +105,7 @@ export default {
       return this.noDataText
     },
     remoteMethod () {
-      return this.fetchOptions.bind(this)
+      return this.fetchOptions.bind(this, false)
     }
   }
 }

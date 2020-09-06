@@ -1,6 +1,6 @@
 {
   "name": "configurable-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/admin.min.js",
   "description": "configable-component base on element-ui, admin components",
   "scripts": {

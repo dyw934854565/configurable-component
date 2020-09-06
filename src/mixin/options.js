@@ -4,11 +4,11 @@ export function createMixin (propKey = 'options') {
   const innerKey = `remote${propKeyCamelCase}`
   const trueKey = `true${propKeyCamelCase}`
   const fetchKey = `fetch${propKeyCamelCase}`
-  const fetchData = (op, model) => {
+  const fetchData = (op, model, args = []) => {
     if (typeof op === 'function') {
-      return op(model)
+      return op(model, ...args)
     } else {
-      return makeRequest({model}, op)
+      return makeRequest({model, args}, op)
     }
   }
   return {
@@ -48,11 +48,13 @@ export function createMixin (propKey = 'options') {
       }
     },
     methods: {
-      async [fetchKey] (isInit = false) {
+      async [fetchKey] (isInit = false, ...args) {
+        console.log('args', {args}, this)
         if (!this.useRemote) {
           return
         }
-        if (this.clearOnFetch && !isInit) {
+        if (this.clearOnFetch && !isInit && typeof this.$attrs.remote === 'undefined') {
+          console.log('clearOnFetch')
           this.$emit('input', null)
         }
         this.loading = true
@@ -63,7 +65,7 @@ export function createMixin (propKey = 'options') {
               this.$watch('model', () => {
                 this[fetchKey]()
               })
-              this[innerKey] = await fetchData(this[propKey], this.model)
+              this[innerKey] = await fetchData(this[propKey], this.model, args)
             } else {
               const keys = []
               const model = new Proxy(this.model, {
@@ -72,7 +74,7 @@ export function createMixin (propKey = 'options') {
                   return obj[prop]
                 }
               })
-              const dataPromise = fetchData(this[propKey], model)
+              const dataPromise = fetchData(this[propKey], model, args)
               if (keys.length) {
                 this.$watch('model', (newModel, oldModel) => {
                   if (keys.some(key => newModel[key] !== oldModel[key])) {
@@ -83,7 +85,7 @@ export function createMixin (propKey = 'options') {
               this[innerKey] = await dataPromise
             }
           } else {
-            this[innerKey] = await fetchData(this[propKey], this.model)
+            this[innerKey] = await fetchData(this[propKey], this.model, args)
           }
         } catch (e) {
           this.fetchError = true

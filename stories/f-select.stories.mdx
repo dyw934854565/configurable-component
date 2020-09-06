@@ -139,7 +139,8 @@ options传入函数，获取远程数据，返回Promise。初始化会调用，
       data() {
         return {
           value: 1,
-          options: async (query = '') => {
+          options: async (model, query = '') => {
+            console.log({model, query})
             await new Promise(resolve => setTimeout(resolve, 600))
             return [{value: '123', label: '123'}, {value: '23', label: '23'}, {value: '345', label: '345', disabled: true}]
                 .filter(item => {
