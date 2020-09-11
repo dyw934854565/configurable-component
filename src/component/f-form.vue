@@ -101,9 +101,11 @@ export default {
       let changed = false
       const model = Object.assign({}, this.model)
       this.trueForms.forEach(form => {
-        if (typeof model[form.key] !== 'undefined' && !this.getVisible(form) && form.resetValWhenHidden !== false) {
-          delete model[form.key]
-          changed = true
+        if (!this.getVisible(form)) {
+          if (typeof model[form.key] !== 'undefined' && form.resetValWhenHidden !== false) {
+            delete model[form.key]
+            changed = true
+          }
         } else if (typeof form.default !== 'undefined') {
           if (typeof model[form.key] === 'undefined') {
             changed = true
@@ -114,6 +116,7 @@ export default {
       if (changed) {
         this.setModel(model)
       }
+      this.$emit('set-default')
     },
     validate (...args) {
       return this.$refs['form'].validate(...args)

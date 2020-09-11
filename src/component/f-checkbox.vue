@@ -9,7 +9,8 @@
     <el-checkbox
       v-for="(option, index) in trueOptions || []"
       :key="typeof option.value === 'object' ? index : option.value"
-      :label="option.label">
+      :label="option.value">
+      {{option.label}}
     </el-checkbox>
   </el-checkbox-group>
 </template>

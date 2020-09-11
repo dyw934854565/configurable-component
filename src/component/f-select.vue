@@ -29,6 +29,10 @@ export default {
     value: {
       type: [Object, String, Number, Array]
     },
+    fetchOnfocus: {
+      type: Boolean,
+      default: false
+    },
     multiple: {
       type: Boolean,
       default: false
@@ -57,7 +61,7 @@ export default {
   mixins: [optionsMixin],
   methods: {
     onFocus () {
-      if (this.fetchError) {
+      if (this.fetchError || this.fetchOnfocus) {
         this.fetchOptions()
       }
     },
@@ -75,10 +79,13 @@ export default {
       return this.$emit('input', res)
     },
     preventFirstFetch () {
-      return typeof this.$attrs.remote !== 'undefined' && typeof this.$attrs.filterable !== 'undefined'
+      return this.isRemote
     }
   },
   computed: {
+    isRemote () {
+      return this.$attrs.remote !== false && this.$attrs.filterable !== false
+    },
     idValue () {
       if (!this.valueKey) {
         return this.value

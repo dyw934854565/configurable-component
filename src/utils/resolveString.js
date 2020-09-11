@@ -12,7 +12,7 @@ export default function resolveString (source, data = {}, ignore = {options: 1, 
     })
   }
   if (typeof source !== 'string') return source
-  const res = source.replace(/\$\{(.+?)\}/g, ($, path) => {
+  const runCode = path => {
     // eslint-disable-next-line no-new-func
     const fn = new Function('data', `
       with(data) {
@@ -20,9 +20,13 @@ export default function resolveString (source, data = {}, ignore = {options: 1, 
       }
     `)
     return fn({...data, window})
-
-    // path = path.replace(/\s/g, '')
-    // return get(data, path)
+  }
+  // 匹配只有单个的情况，防止被强制转成字符串
+  if (source[0] === '$' && source[1] === '{' && source[source.length - 1] === '}') {
+    return runCode(source.substr(2, source.length - 3))
+  }
+  const res = source.replace(/\$\{(.+?)\}/g, ($, path) => {
+    return runCode(path)
   })
   if (res === source) {
     return get(data, res, res)

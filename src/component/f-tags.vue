@@ -2,22 +2,28 @@
   <div class="f-tags">
     <el-tag
       v-for="(tag, index) in values"
-      :key="index + tag"
+      :key="`${index}_${tag}`"
       :closable="!readonly && !disabled"
       @close="del(index)"
       :type="type || tag.type">
       {{tag.label || tag}}
     </el-tag>
-    <el-input class="input-new-tag" size="small" v-if="!readonly && !disabled" v-model="newStr" :placeholder="placeholder" @blur="add" @keydown.native.enter="add"></el-input>
+    <component :controls="false" :is="valueType" class="input-new-tag" size="small" v-if="!readonly && !disabled" v-model="newStr" :placeholder="placeholder" @blur="add" @keydown.native.enter="add"></component>
   </div>
 </template>
 
 <script>
 import arrayOrStringMixin from '../mixin/arrayOrString'
+import fInputNumber from './f-input-number'
 export default {
   name: 'fTags',
+  components: {fInputNumber},
   inheritAttrs: false,
   props: {
+    valueType: {
+      type: String,
+      default: 'el-input'
+    },
     type: String,
     readonly: {
       type: Boolean,
@@ -35,7 +41,7 @@ export default {
   },
   mixins: [arrayOrStringMixin],
   data: () => ({
-    newStr: ''
+    newStr: undefined
   }),
   methods: {
     del (index) {
@@ -44,13 +50,13 @@ export default {
       this.onInput(value)
     },
     async add () {
-      if (!this.newStr) return
+      if (this.newStr === '' || typeof this.newStr === 'undefined') return
       if (this.checkNew) {
         const isChecked = await this.checkNew(this.newStr)
         if (isChecked === false) return
       }
       const value = [...this.values, this.newStr]
-      this.newStr = ''
+      this.newStr = undefined
       this.onInput(value)
     }
   }

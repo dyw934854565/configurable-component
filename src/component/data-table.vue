@@ -43,6 +43,10 @@ export default {
     getData: {
       type: Function,
       required: true
+    },
+    autoGet: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -66,6 +70,7 @@ export default {
       this.sortOption = {[defaultSort.prop]: defaultSort.order || 'ascending'}
     }
     this.mergePageInfo()
+    if (!this.autoGet) return
     this.getDataInner()
     // if (this.routerMode) {
     //   this.$watch('$route', () => {

@@ -1,0 +1,37 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import fCheckbox from '../src/component/f-checkbox.vue'
+
+<Meta title="f-checkbox" component={fCheckbox} />
+
+## f-checkbox
+
+<Preview>
+  <Story name="简单用法">
+  {
+    {
+      data() {
+        return {
+          value: [1],
+          options: [{
+            value: 1,
+            label: 'test'
+          }, {
+            value: 2,
+            label: 'test2'
+          }]
+        }
+      },
+      methods: {
+        onChange(e) {
+          console.log(e);
+        }
+      },
+      template: '<f-checkbox @input="onChange" :options="options" v-model="value" />',
+    }
+  }
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={fCheckbox} />

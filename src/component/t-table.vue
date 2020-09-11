@@ -11,6 +11,7 @@
             @refresh="refreshData"
             v-if="col.component"
             :is="col.component"
+            @op="op($event, scope.row)"
             :row="scope.row"
             :col="col"
             v-bind="makeData(col, scope.row, scope, true)"
@@ -58,6 +59,10 @@ export default {
       type: Boolean,
       default: false
     },
+    autoGet: {
+      type: Boolean,
+      default: true
+    },
     emptyText: {
       type: String,
       default: '暂无数据'
@@ -87,6 +92,12 @@ export default {
     }
   },
   methods: {
+    preventFirstFetch () {
+      return !this.autoGet
+    },
+    op (name, row) {
+      this.$emit('op', {name, row})
+    },
     getColExtra (col) {
       const res = col.colExtra || col.extra || {}
       if (!this.page || !res.sortable) return res

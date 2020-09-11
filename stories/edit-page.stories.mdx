@@ -73,6 +73,28 @@ import createModel from './model.js'
             tableComponent: {
               component: 'f-select'
             }
+          }, {
+            key: 'ops',
+            label: '操作',
+            tableComponent: {
+              component: 't-btns',
+              extra: {
+                btns: [
+                  {
+                    label: '编辑',
+                    handle: 'edit'
+                  },
+                  {
+                    label: '删除',
+                    handle: 'delete'
+                  },
+                  {
+                    label: '添加',
+                    handle: 'add'
+                  }
+                ]
+              }
+            }
           }],
           model: createModel({
             initData: [{

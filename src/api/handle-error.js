@@ -6,8 +6,8 @@ export default {
       let message = msg
       if (typeof err === 'string') {
         message = err
-      } else if (err && err.message) {
-        message = err.message
+      } else if (err && (err.message || err.msg || err.errMsg)) {
+        message = err.message || err.msg || err.errMsg
       }
       if (message) {
         this.$message.error(message)

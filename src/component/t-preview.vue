@@ -2,7 +2,7 @@
     <div class="t-preview" :style="style">
         <component
             @click="onClick"
-            v-if="preview"
+            v-if="preview && value"
             :is="preview"
             controls
             :src="value"
@@ -41,7 +41,12 @@ export default {
     },
     value: {
       type: String,
+      default: '',
       required: true
+    },
+    fullscreen: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -54,9 +59,31 @@ export default {
     }
   },
   methods: {
-    onClick () {
+    onClick (e) {
       if (this.href) {
-        window.open(this.href)
+        return window.open(this.href)
+      }
+      if (this.fullscreen) {
+        e.preventDefault()
+        if (this.preview === 'img' || this.preview === 'video') {
+          const h = this.$createElement
+          this.$msgbox({
+            customClass: 't-preview-modal',
+            title: '',
+            width: '800',
+            message: h(this.preview, {
+              attrs: {
+                src: this.value,
+                width: '100%',
+                controls: true,
+                autoplay: true
+              }
+            }),
+            showCancelButton: false,
+            showConfirmButton: false
+          })
+          return false
+        }
       }
     }
   },
@@ -90,3 +117,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.el-message-box.t-preview-modal {
+  width: 600px;
+}
+</style>

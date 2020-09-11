@@ -7,6 +7,7 @@
                 :forms="filterForms"
                 :model.sync="filter"
                 @change="onChange"
+                @set-default="setHasSetDefault"
                 @submit="onSearch"
             >
                 <el-button @click="onSearch" type="primary">搜索</el-button>
@@ -32,6 +33,7 @@
             :data="getDataWithFilter"
             :getData="getDataWithFilter"
             :pageInfo="pageInfo"
+            @op="handleOp"
             style="width: 100%;"
         >
           <el-table-column v-if="showIndex" label="序号" type="index" slot="pre-column"></el-table-column>
@@ -77,8 +79,9 @@ import resolveString from '../utils/resolveString'
 import isEqual from 'lodash.isequal'
 import tBtn from './t-btn'
 import { saveAs } from 'file-saver'
-import makeRequest from '../utils/makeRequest'
 
+import makeRequest from '../utils/makeRequest'
+import getDefer from '../utils/getDefer'
 export default {
   name: 'edit-page',
   components: {
@@ -155,6 +158,8 @@ export default {
       model: {},
       addCache: {},
       type: '',
+      defer: getDefer(),
+      hasSetDefault: false,
       formExtra: {
         'label-width': '140px'
       },
@@ -166,7 +171,12 @@ export default {
           }
         }
       },
-      getDataWithFilter: (params) => this.getData({...params, filter: this.filter})
+      getDataWithFilter: async params => {
+        if (this.showFileter && !this.hasSetDefault) {
+          await this.defer.promise
+        }
+        return this.getData({...params, filter: this.filter})
+      }
     }
   },
   computed: {
@@ -223,6 +233,8 @@ export default {
   watch: {
     settings () {
       this.filter = {}
+      this.hasSetDefault = false
+      this.defer = getDefer()
       if (this.routerMode && !isEqual({}, this.$route.query)) {
         this.$router.push({
           query: {}
@@ -231,6 +243,20 @@ export default {
     }
   },
   methods: {
+    handleOp ({name, row} = {}) {
+      if (name === 'edit') {
+        this.addOrEditRowAction('编辑', row)
+      } else if (name === 'delete') {
+        this.deleteRowAction(row)
+      } else if (name === 'add') {
+        this.addOrEditRowAction()
+      }
+    },
+    setHasSetDefault () {
+      if (this.hasSetDefault) return
+      this.hasSetDefault = true
+      this.defer.resolve()
+    },
     async onDownload () {
       try {
         await this.$refs.filterForm.validate()
@@ -284,7 +310,11 @@ export default {
       this.$refs.table && this.$refs.table.pageInfoInner && (this.$refs.table.pageInfoInner.currentPage = 1)
       this.fetchData()
     },
-    onChange: debounce(function () {
+    onChange () {
+      if (this.showFileter && !this.hasSetDefault) return
+      this.debounceSearch()
+    },
+    debounceSearch: debounce(function () {
       this.onSearch()
     }, 300),
     async deleteRowAction (row = {}) {
@@ -299,6 +329,7 @@ export default {
       }
     },
     fetchData () {
+      if (this.showFileter && !this.hasSetDefault) return
       if (this.routerMode) {
         // const path = this.routerMode(this.pageInfoInner)
         const query = {

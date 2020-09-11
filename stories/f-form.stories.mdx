@@ -221,7 +221,8 @@ forms支持函数
               key: 'data',
               type: 'el-input',
               label: '参数',
-              hidden: 'model.close',
+              default: 'fqw',
+              hidden: ({model}) => model.close,
               extra: {
                 placeholder: '输入参数'
               }

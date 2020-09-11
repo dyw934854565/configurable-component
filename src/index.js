@@ -17,6 +17,7 @@ import fSelect from './component/f-select'
 import fObjSelect from './component/f-obj-select'
 import fRadiobox from './component/f-radiobox'
 import fTags from './component/f-tags'
+import fInputNumber from './component/f-input-number.vue'
 
 import tLink from './component/t-link'
 import tTag from './component/t-tag'
@@ -31,7 +32,7 @@ import tLongText from './component/t-long-text.vue'
 
 const components = [
   // 表单组件，可用于表格，就可以在表格中直接修改数据
-  fCascader, fCheckbox, fFile, fSelect, fObjSelect, fRadiobox, fTags,
+  fCascader, fCheckbox, fFile, fSelect, fObjSelect, fRadiobox, fTags, fInputNumber,
   // 表格展示组件
   tLink, tTag, tBtns, tBtn, tSwitch, tPreview, tDataMap, tColor, tDate, tLongText
 ]

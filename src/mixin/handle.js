@@ -2,7 +2,7 @@ import makeRequest from '../utils/makeRequest'
 export default {
   props: {
     handle: {
-      type: [Function, Object],
+      type: [Function, Object, String],
       required: true
     },
     confirm: {
@@ -28,6 +28,9 @@ export default {
       try {
         if (this.confirm) {
           await this.$confirm('确定继续操作', '提醒')
+        }
+        if (typeof this.handle === 'string') {
+          return this.$emit('op', this.handle)
         }
         this.loading = true
         const data = {row: this.row, col: this.col}

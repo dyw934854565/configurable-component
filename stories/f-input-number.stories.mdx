@@ -1,0 +1,36 @@
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import fInputNumber from '../src/component/f-input-number.vue'
+
+<Meta title="f-input-number" component={fInputNumber} />
+
+## f-input-number
+
+修复重复input和首次input问题
+
+<Preview>
+  <Story name="简单用法">
+  {
+    {
+      data() {
+        return {
+          value: 12
+        }
+      },
+      methods: {
+        onInput(val) {
+          console.log('====> input', val)
+        },
+        onEvent(evtName, data) {
+          console.log('====> evtName', evtName, data)
+        }
+      },
+      components: { fInputNumber },
+      template: `<fInputNumber @change="onEvent('change', $event)" @focus="onEvent('focus', $event)" @blur="onEvent('blur', $event)" v-model="value" @input="onInput" />`,
+    }
+  }
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={fInputNumber} />

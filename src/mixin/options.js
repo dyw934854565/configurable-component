@@ -4,11 +4,11 @@ export function createMixin (propKey = 'options') {
   const innerKey = `remote${propKeyCamelCase}`
   const trueKey = `true${propKeyCamelCase}`
   const fetchKey = `fetch${propKeyCamelCase}`
-  const fetchData = (op, model, args = []) => {
+  const fetchData = (op, model, query) => {
     if (typeof op === 'function') {
-      return op(model, ...args)
+      return op(model, query)
     } else {
-      return makeRequest({model, args}, op)
+      return makeRequest({model, query}, op)
     }
   }
   return {
@@ -48,13 +48,11 @@ export function createMixin (propKey = 'options') {
       }
     },
     methods: {
-      async [fetchKey] (isInit = false, ...args) {
-        console.log('args', {args}, this)
+      async [fetchKey] (isInit = false, query) {
         if (!this.useRemote) {
           return
         }
-        if (this.clearOnFetch && !isInit && typeof this.$attrs.remote === 'undefined') {
-          console.log('clearOnFetch')
+        if (this.clearOnFetch && !isInit && !this.isRemote) {
           this.$emit('input', null)
         }
         this.loading = true
@@ -65,7 +63,7 @@ export function createMixin (propKey = 'options') {
               this.$watch('model', () => {
                 this[fetchKey]()
               })
-              this[innerKey] = await fetchData(this[propKey], this.model, args)
+              this[innerKey] = await fetchData(this[propKey], this.model, query)
             } else {
               const keys = []
               const model = new Proxy(this.model, {
@@ -74,7 +72,7 @@ export function createMixin (propKey = 'options') {
                   return obj[prop]
                 }
               })
-              const dataPromise = fetchData(this[propKey], model, args)
+              const dataPromise = fetchData(this[propKey], model, query)
               if (keys.length) {
                 this.$watch('model', (newModel, oldModel) => {
                   if (keys.some(key => newModel[key] !== oldModel[key])) {
@@ -85,7 +83,7 @@ export function createMixin (propKey = 'options') {
               this[innerKey] = await dataPromise
             }
           } else {
-            this[innerKey] = await fetchData(this[propKey], this.model, args)
+            this[innerKey] = await fetchData(this[propKey], this.model, query)
           }
         } catch (e) {
           this.fetchError = true
